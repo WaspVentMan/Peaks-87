@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PEAKS '87</title>
+    <script src="lib/KBnM.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/PsychoGoldfishNG/NewgroundsIO-JS@8c72515/dist/NewgroundsIO.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background-color: black;">
+    <div class="gameWindow" style="width: 512px; height: 512px; position: absolute; top: calc(50% - 256px); left: calc(50% - 256px); overflow: hidden; background-color: rgb(135, 206, 235);">
+        <div class="game" style="width: 512px; height: 512px; position: absolute; z-index: 1000;">
+            <div class="holdzone"></div>
+            <div class="holddeco"></div>
+            <div style="position: absolute; top: 480px; background-image: url(img/ground.png); width: 512px; height: 64px;"></div>
+            <div class="player" style="position: absolute; left: -16px;">
+                <div class="handL" style="width: 16px; height: 16px; background-image: url(img/hand.png); position: absolute;"></div>
+                <div style="width: 16px; height: 32px; background-image: url(img/peakMan.png); position: absolute;"></div>
+                <div class="handR" style="width: 16px; height: 16px; background-image: url(img/handR.png); position: absolute;"></div>
+            </div>
+        </div>
+        <div class="towerRender" style="width: 512px; height: 1028px; position: absolute; background-image: url(img/cliff.png); z-index: 100;"></div>
+        <div class="paralax0" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 99;"></div>
+        <div class="paralax1" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree1.png); z-index: 98;"></div>
+        <div class="paralax2" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 97;"></div>
+        <div class="paralax3" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree1.png); z-index: 96;"></div>
+        <div class="paralax4" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 95;"></div>
+        <div class="paralax5" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree1.png); z-index: 94;"></div>
+        <div class="paralax6" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 93;"></div>
+        <div class="paralax7" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree1.png); z-index: 92;"></div>
+        <div class="paralax8" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 91;"></div>
+        <div class="paralax9" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree1.png); z-index: 90;"></div>
+        <div class="paralax10" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 89;"></div>
+        <div class="paralax11" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraHill0.png); z-index: 88;"></div>
+        <div class="paralax12" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraHill1.png); z-index: 87;"></div>
+        <div class="paralax13" style="width: 512px; height: 224px; position: absolute; bottom: -32px; background-image: url(img/deco/paraMount0.png); z-index: 86;"></div>
+        <div class="height" style="position: absolute; z-index: 10000; display: flex;">
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/0.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/m.png);"></div>
+        </div>
+        <div class="holds" style="position: absolute; z-index: 10000; top: 0px; right: 0px; display: flex;">
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/0.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/h.png);"></div>
+        </div>
+        <div class="con" style="position: absolute; z-index: 10000; bottom: 0px; display: flex;"></div>
+        <div class="ver" style="position: absolute; z-index: 10000; bottom: 0px; right: 0px; display: flex;"></div>
+        <div class="gameOver" style="position: absolute; z-index: 10000; top: 64px; left: 224px; display: none; width: 64px; height: 64px; background-image: url(img/gameover.png);"></div>
+        <div class="boards" style="position: absolute; z-index: 10000; top: 64px; left: 128px; width: 256px; height: 384px; display: none;"></div>
+        <div class="credits" style="position: absolute; z-index: 100001; width: 512px; height: 512px; display: none;"><div class="creditsText"></div></div>
+        <div class="title" style="position: absolute; z-index: 100000; width: 512px; height: 512px;">
+            <div style="background-image: url(img/logo.png); width: 256px; height: 64px; position: absolute; left: 128px; top: 128px;"></div>
+            <div class="select" style="width: 256px; height: 256px; position: absolute; top: 256px; left: 128px;">
+                <div style="width: max-content; margin: auto; height: 16px; display: flex; text-align: center">
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/z.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/t.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/s.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/t.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/a.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/r.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/t.png);"></div>
+                </div>
+                <div style="width: max-content; margin: auto; height: 16px; display: flex; text-align: center">
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/x.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/f.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/r.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/c.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/r.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/e.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/d.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/i.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/t.png);"></div>
+                    <div style="width: 8px; height: 16px; background-image: url(img/letter/s.png);"></div>
+                </div>
+            </div>
+        </div>
+        <div class="focus" style="position: absolute; z-index: 10000000; width: 512px; height: 512px; background-color: #000000dd;" onclick="this.style.display = 'none'; wind.play()">
+            <div style="width: max-content; margin: auto; height: 16px; margin-top: 240px; display: flex; text-align: center">
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/u.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/t.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/f.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/f.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/c.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/u.png);"></div>
+                <div style="width: 8px; height: 16px; background-image: url(img/letter/s.png);"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loadZoneDeluxe" style="position: absolute; width: 512px; height: 512px; top: calc(50% - 256px); left: calc(50% - 256px); z-index: 1000000; background-color: black;">
+        <div style="display: flex;">
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/l.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/a.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/d.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/i.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/n.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/g.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/,.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/,.png);"></div>
+            <div style="width: 8px; height: 16px; background-image: url(img/letter/,.png);"></div>
+        </div>
+        <div class="assetCount" style="display: flex;"></div>
+    </div>
+    <script>
+        let loaded = 0
+        let loadLoop = setInterval(function(){
+            heightText = ""
+
+            for (let x = 0; x < (loaded + "_of_80").length; x++){
+                heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${(loaded + "_of_80")[x]}.png);"></div>`
+            }
+
+            document.querySelector(".assetCount").innerHTML = heightText.toLocaleLowerCase()
+
+            if (loaded >= 80){
+                setTimeout(function(){
+                    document.querySelector(".loadZoneDeluxe").style.width = "0px"
+                }, 500)
+                clearInterval(loadLoop)
+                return
+            }
+        }, 10)
+    </script>
+    <div class="loadZone" style="display: none;">
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/axecrunch1.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/axecrunch2.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/axecrunch3.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/axehit1.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/axehit2.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/axehit3.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/cramponfail1.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/cramponfail2.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/cramponfail3.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/fall1.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/fall2.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/fall3.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/fall4.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/grab1.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/grab2.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/grab3.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/jump1.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/jump2.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/jump3.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/jump4.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/ForestA.mp3"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/ExecutiveOffice.mp3"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/highwind.wav"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/87.mp3"></audio>
+        <img onload="loaded++" src="img/letter/,.png">
+        <img onload="loaded++" src="img/letter/_.png">
+        <img onload="loaded++" src="img/letter/-.png">
+        <img onload="loaded++" src="img/letter/+.png">
+        <img onload="loaded++" src="img/letter/0.png">
+        <img onload="loaded++" src="img/letter/1.png">
+        <img onload="loaded++" src="img/letter/2.png">
+        <img onload="loaded++" src="img/letter/3.png">
+        <img onload="loaded++" src="img/letter/4.png">
+        <img onload="loaded++" src="img/letter/5.png">
+        <img onload="loaded++" src="img/letter/6.png">
+        <img onload="loaded++" src="img/letter/7.png">
+        <img onload="loaded++" src="img/letter/8.png">
+        <img onload="loaded++" src="img/letter/9.png">
+        <img onload="loaded++" src="img/letter/a.png">
+        <img onload="loaded++" src="img/letter/b.png">
+        <img onload="loaded++" src="img/letter/c.png">
+        <img onload="loaded++" src="img/letter/d.png">
+        <img onload="loaded++" src="img/letter/e.png">
+        <img onload="loaded++" src="img/letter/f.png">
+        <img onload="loaded++" src="img/letter/g.png">
+        <img onload="loaded++" src="img/letter/h.png">
+        <img onload="loaded++" src="img/letter/i.png">
+        <img onload="loaded++" src="img/letter/j.png">
+        <img onload="loaded++" src="img/letter/k.png">
+        <img onload="loaded++" src="img/letter/l.png">
+        <img onload="loaded++" src="img/letter/m.png">
+        <img onload="loaded++" src="img/letter/n.png">
+        <img onload="loaded++" src="img/letter/o.png">
+        <img onload="loaded++" src="img/letter/p.png">
+        <img onload="loaded++" src="img/letter/q.png">
+        <img onload="loaded++" src="img/letter/r.png">
+        <img onload="loaded++" src="img/letter/s.png">
+        <img onload="loaded++" src="img/letter/t.png">
+        <img onload="loaded++" src="img/letter/u.png">
+        <img onload="loaded++" src="img/letter/v.png">
+        <img onload="loaded++" src="img/letter/w.png">
+        <img onload="loaded++" src="img/letter/x.png">
+        <img onload="loaded++" src="img/letter/y.png">
+        <img onload="loaded++" src="img/letter/z.png">
+        <img onload="loaded++" src="img/cliff.png">
+        <img onload="loaded++" src="img/ground.png">
+        <img onload="loaded++" src="img/handclampL.png">
+        <img onload="loaded++" src="img/handclampR.png">
+        <img onload="loaded++" src="img/handaxeL.png">
+        <img onload="loaded++" src="img/handaxeR.png">
+        <img onload="loaded++" src="img/handL.png">
+        <img onload="loaded++" src="img/handR.png">
+        <img onload="loaded++" src="img/hold.png">
+        <img onload="loaded++" src="img/peakMan.png">
+        <img onload="loaded++" src="img/logo.png">
+        <img onload="loaded++" src="img/deco/paraTree0.png">
+        <img onload="loaded++" src="img/deco/paraTree1.png">
+        <img onload="loaded++" src="img/deco/paraHill0.png">
+        <img onload="loaded++" src="img/deco/paraHill1.png">
+        <img onload="loaded++" src="img/deco/paraMount0.png">
+    </div>
+
+    <script src="nginit.js"></script>
+    <script src="script.js"></script>
+    <script src="credits.js"></script>
+</body>
+</html>
