@@ -121,13 +121,13 @@
         let loadLoop = setInterval(function(){
             heightText = ""
 
-            for (let x = 0; x < (loaded + "_of_80").length; x++){
-                heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${(loaded + "_of_80")[x]}.png);"></div>`
+            for (let x = 0; x < (loaded + "_of_85").length; x++){
+                heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${(loaded + "_of_85")[x]}.png);"></div>`
             }
 
             document.querySelector(".assetCount").innerHTML = heightText.toLocaleLowerCase()
 
-            if (loaded >= 80){
+            if (loaded >= 85){
                 setTimeout(function(){
                     document.querySelector(".loadZoneDeluxe").style.width = "0px"
                 }, 500)
@@ -161,6 +161,9 @@
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/ExecutiveOffice.mp3"></audio>
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/highwind.wav"></audio>
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/87.mp3"></audio>
+        <audio oncanplaythrough="loaded++" preload="auto" src="audio/click.wav"></audio>
+        <img onload="loaded++" src="img/letter/&.png">
+        <img onload="loaded++" src="img/letter/^.png">
         <img onload="loaded++" src="img/letter/,.png">
         <img onload="loaded++" src="img/letter/_.png">
         <img onload="loaded++" src="img/letter/-.png">
@@ -184,12 +187,14 @@
         <img onload="loaded++" src="img/letter/g.png">
         <img onload="loaded++" src="img/letter/h.png">
         <img onload="loaded++" src="img/letter/i.png">
+        <img onload="loaded++" src="img/letter/í.png">
         <img onload="loaded++" src="img/letter/j.png">
         <img onload="loaded++" src="img/letter/k.png">
         <img onload="loaded++" src="img/letter/l.png">
         <img onload="loaded++" src="img/letter/m.png">
         <img onload="loaded++" src="img/letter/n.png">
         <img onload="loaded++" src="img/letter/o.png">
+        <img onload="loaded++" src="img/letter/ó.png">
         <img onload="loaded++" src="img/letter/p.png">
         <img onload="loaded++" src="img/letter/q.png">
         <img onload="loaded++" src="img/letter/r.png">
