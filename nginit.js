@@ -2,7 +2,7 @@ let offline = true
 
 // Set up the options for NGIO.
 var options = {
-    version: "1.0.4",
+    version: "1.0.5",
     preloadScoreBoards: true,
     preloadMedals: true,
     preloadSaveSlots: true
