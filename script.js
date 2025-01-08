@@ -458,8 +458,8 @@ setInterval(function(){
             let deathboard = 0
 
             if (punishment == 0.1){deathboard = 14449}
-            if (punishment == 1){deathboard = 14452}
-            if (punishment == 10){deathboard = 14451}
+            if (punishment == 1)  {deathboard = 14452}
+            if (punishment == 10) {deathboard = 14451}
             if (punishment == 100){deathboard = 14453}
 
             if (!offline){NGIO.postScore(deathboard, Math.round(player.best/16)*100, function(){})}
@@ -471,6 +471,7 @@ setInterval(function(){
             deathtimeout.push(setTimeout(function(){sfx("audio/fall" + Math.ceil(Math.random()*4) + ".wav", 3.125)}, 4000))
             deathtimeout.push(setTimeout(function(){sfx("audio/fall" + Math.ceil(Math.random()*4) + ".wav", 1.5625)}, 5000))
 
+            best = false
             let prepos = 0
 
             Math.round(player.best/16)
@@ -480,14 +481,16 @@ setInterval(function(){
                 prepos++
             }
 
+            if (scores[prepos][0] == "YOU" && scores[prepos][1] < Math.round(player.best/16)){best = true}
+
             for (let x = 0; x < 10; x++){
                 if (scores[9-x][1] > Math.round(player.best/16)){
                     scores.splice(10-x, 0, ["YOU", Math.round(player.best/16)])
-                    scores.splice(10, 0)
+                    scores.splice(10, 999)
                     break
                 } else if (scores[9-x][1] < Math.round(player.best/16) && x == 9){
                     scores.splice(0, 0, ["YOU", Math.round(player.best/16)])
-                    scores.splice(10, 0)
+                    scores.splice(10, 999)
                 }
             }
 
@@ -500,7 +503,7 @@ setInterval(function(){
                 postpos++
             }
 
-            if (postpos < prepos || (prepos == 0 && scores[0][1] == Math.round(player.best/16))){
+            if (best || postpos < prepos || (prepos == 0 && scores[0][1] == Math.round(player.best/16))){
                 best = true
                 if (postpos == 0 && prepos != 0 && scores[1][0] == "SLM"){
                     playCredits("none", true)
@@ -508,7 +511,6 @@ setInterval(function(){
                     sfx("audio/ForestA.mp3", 15)
                 }
             } else {
-                best = false
                 sfx("audio/ExecutiveOffice.mp3", 15)
                 if (Math.round(player.best/16) == 87){
                     sfx("audio/87.mp3")
@@ -537,6 +539,7 @@ setInterval(function(){
                     }
                 }
             }
+
             unlockMedal(82412, scores[0][0] == "YOU")
             unlockMedal(82411, yours == 10)
 
@@ -560,9 +563,9 @@ setInterval(function(){
 
             document.querySelector(".holdzone").appendChild(newHold)
         }
-        while (holds[holds.length-1][1] < player.best + 512){ //Math.ceil(Math.random()*(player.best/2560))*16
+        while (holds[holds.length-1][1] < player.best + 512){
             let holdx = holds[holds.length-1][0] + Math.round(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4)-(((holds[holds.length-1][1]/(2560/punishment))+4)/2))*16
-            let holdy = holds[holds.length-1][1]+(Math.ceil(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4))*16)
+            let holdy = holds[holds.length-1][1] + (Math.ceil(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4))*16)
             
             if (holdx < 128){
                 holdx = 128
