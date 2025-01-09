@@ -28,14 +28,26 @@ Char subs: `_ to space` `+ to '` `, to .` `^ to <` `% to >`
 
 i.e.
 
-`document.querySelector(".class").innerHTML = renderChar("L")`.
+```
+HTMLObject.innerHTML = renderChar("L")
+```
 
 outputs:
 
 ![l](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/l.png?raw=true)
 
-> [!WARNING]
-> Using a character that is not in the list of [Compatable chars](#compatable-characters) and applying the result to a HTML element's `.innerHTML` will cause the console to throw 404 errors.
+> [!NOTE]
+> Using a character that is not in the list of [Compatable chars](#compatable-characters) and applying the result to a HTML element's `.innerHTML` will cause the console to throw 404 errors and missing letters to occur.
+>
+> i.e.
+>
+> ```
+> HTMLObject.innerHTML = renderChar("!")
+> ```
+>
+> output:
+>
+> nothing
 
 Renders a list of strings as a html compatible UFO 50 string.
 
@@ -49,14 +61,26 @@ All chars are automatically converted to lower case.
 
 i.e.
 
-`document.querySelector(".class").innerHTML = renderString("words_and_stuff")`.
+```
+HTMLObject.innerHTML = renderString("words_and_stuff")
+```
 
 outputs:
 
 ![w](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/w.png?raw=true)![o](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/o.png?raw=true)![r](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/r.png?raw=true)![d](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/d.png?raw=true)![s](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/s.png?raw=true)![_](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/_.png?raw=true)![a](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/a.png?raw=true)![n](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/n.png?raw=true)![d](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/d.png?raw=true)![_](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/_.png?raw=true)![s](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/s.png?raw=true)![t](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/t.png?raw=true)![u](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/u.png?raw=true)![f](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/f.png?raw=true)![f](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/f.png?raw=true)
 
-> [!WARNING]
-> Using a character that is not in the list of [Compatable chars](#compatable-characters) and applying the result to a HTML element's `.innerHTML` will cause the console to throw 404 errors.
+> [!NOTE]
+> Using a character that is not in the list of [Compatable chars](#compatable-characters) and applying the result to a HTML element's `.innerHTML` will cause the console to throw 404 errors and missing letters to occur.
+>
+> i.e.
+>
+> ```
+> HTMLObject.innerHTML = renderString("epic!")
+> ```
+>
+> output:
+>
+> ![e](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/e.png?raw=true)![p](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/p.png?raw=true)![i](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/i.png?raw=true)![c](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/c.png?raw=true)
 
 Renders a list of strings as a html compatible UFO 50 string.
 
@@ -70,15 +94,28 @@ All chars are automatically converted to lower case.
 
 i.e.
 
-`document.querySelector(".class").innerHTML = renderStrings(["string", "string"])`.
+```
+HTMLObject.innerHTML = renderStrings(["string", "string"])
+```
 
 outputs:
 
 ![s](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/s.png?raw=true)![t](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/t.png?raw=true)![r](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/r.png?raw=true)![i](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/i.png?raw=true)![n](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/n.png?raw=true)![g](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/g.png?raw=true)<br>
 ![s](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/s.png?raw=true)![t](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/t.png?raw=true)![r](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/r.png?raw=true)![i](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/i.png?raw=true)![n](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/n.png?raw=true)![g](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/g.png?raw=true)
 
-> [!WARNING]
-> Using a character that is not in the list of [Compatable chars](#compatable-characters) and applying the result to a HTML element's `.innerHTML` will cause the console to throw 404 errors.
+> [!NOTE]
+> Using a character that is not in the list of [Compatable chars](#compatable-characters) and applying the result to a HTML element's `.innerHTML` will cause the console to throw 404 errors and missing letters to occur.
+>
+> i.e.
+>
+> ```
+> HTMLObject.innerHTML = renderStrings(["super", "!hot!"])
+> ```
+>
+> output:
+>
+> ![s](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/s.png?raw=true)![u](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/u.png?raw=true)![p](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/p.png?raw=true)![e](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/e.png?raw=true)![r](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/r.png?raw=true)<br>
+>![_](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/_.png?raw=true)![h](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/h.png?raw=true)![o](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/o.png?raw=true)![t](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/t.png?raw=true)
 
 Renders a list of strings as a html compatible UFO 50 string.
 
@@ -92,7 +129,9 @@ All chars are automatically converted to lower case.
 
 i.e.
 
-`renderDots(5)`
+```
+renderDots(5)
+```
 
 output:
 
