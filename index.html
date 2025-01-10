@@ -13,13 +13,14 @@
 </head>
 <body style="background-color: black;">
     <div class="gameWindow" style="width: 512px; height: 512px; position: absolute; top: calc(50% - 256px); left: calc(50% - 256px); overflow: hidden; background-color: rgb(135, 206, 235);">
+        <div class="stars" style="width: 512px; height: 512px; position: absolute; background-image: url(img/stars.png); opacity: 0%;"></div>
         <div class="game" style="width: 512px; height: 512px; position: absolute; z-index: 1000;">
             <div class="holdzone"></div>
             <div class="holddeco"></div>
             <div style="position: absolute; top: 480px; background-image: url(img/ground.png); width: 512px; height: 64px;"></div>
             <div class="player" style="position: absolute; left: -16px;">
                 <div class="handL" style="width: 16px; height: 16px; background-image: url(img/handL.png); position: absolute;"></div>
-                <div style="width: 16px; height: 32px; background-image: url(img/peakMan.png); position: absolute;"></div>
+                <div class="peakMan" style="width: 16px; height: 32px; background-image: url(img/peakMan.png); position: absolute;"></div>
                 <div class="handR" style="width: 16px; height: 16px; background-image: url(img/handR.png); position: absolute;"></div>
             </div>
         </div>
@@ -121,13 +122,13 @@
         let loadLoop = setInterval(function(){
             heightText = ""
 
-            for (let x = 0; x < (loaded + "_of_85").length; x++){
-                heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${(loaded + "_of_85")[x]}.png);"></div>`
+            for (let x = 0; x < (loaded + "_of_87").length; x++){
+                heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${(loaded + "_of_87")[x]}.png);"></div>`
             }
 
             document.querySelector(".assetCount").innerHTML = heightText.toLocaleLowerCase()
 
-            if (loaded >= 85){
+            if (loaded >= 87){
                 setTimeout(function(){
                     document.querySelector(".loadZoneDeluxe").style.width = "0px"
                 }, 500)
@@ -216,7 +217,9 @@
         <img onload="loaded++" src="img/handR.png">
         <img onload="loaded++" src="img/hold.png">
         <img onload="loaded++" src="img/peakMan.png">
+        <img onload="loaded++" src="img/peakManAxeless.png">
         <img onload="loaded++" src="img/logo.png">
+        <img onload="loaded++" src="img/stars.png">
         <img onload="loaded++" src="img/deco/paraTree0.png">
         <img onload="loaded++" src="img/deco/paraTree1.png">
         <img onload="loaded++" src="img/deco/paraHill0.png">

@@ -1,4 +1,4 @@
-![Peaks '87 Logo](https://github.com/WaspVentMan/Peaks-87/blob/main/img/NGlogo.png?raw=true)
+![Peaks '87 Logo](https://github.com/WaspVentMan/Peaks-87/blob/main/img/NGlogoV3.png?raw=true)
 # Peaks '87: Climb an endless mountain in the Great Gales
 
 me when documentation

@@ -123,23 +123,27 @@ function gametime(){
     }
 
     if (mode == "TN"){
-        colour[0][0] = 135-(85*shift)
+        colour[0][0] = 135-(135*shift)
         colour[0][1] = 206-(206*shift)
-        colour[0][2] = 235-(185*shift)
+        colour[0][2] = 235-(210*shift)
 
         colour[1][0] = 226-(226*shift)
         colour[1][1] = 176-(176*shift)
         colour[1][2] = 69 -(19*shift)
+
+        document.querySelector(".stars").style.opacity = (100*shift) + "%"
     }
 
     if (mode == "FN"){
-        colour[0][0] = 50 +(85*shift)
+        colour[0][0] = 0  +(135*shift)
         colour[0][1] = 0  +(206*shift)
-        colour[0][2] = 50 +(185*shift)
+        colour[0][2] = 25 +(210*shift)
 
         colour[1][0] = 0  +(226*shift)
         colour[1][1] = 0  +(176*shift)
         colour[1][2] = 50 +(19*shift)
+
+        document.querySelector(".stars").style.opacity = (100-(100*shift)) + "%"
     }
 
     if (mode == "D"){
@@ -163,13 +167,15 @@ function gametime(){
     }
 
     if (mode == "N"){
-        colour[0][0] = 50
+        colour[0][0] = 0
         colour[0][1] = 0
-        colour[0][2] = 50
+        colour[0][2] = 25
 
         colour[1][0] = 0
         colour[1][1] = 0
         colour[1][2] = 50
+
+        document.querySelector(".stars").style.opacity = "100%"
     }
 
     document.querySelector(".gameWindow").style.background = `linear-gradient(180deg, rgba(${colour[0][0]},${colour[0][1]},${colour[0][2]},${colour[0][3]}) 0%, rgba(${colour[1][0]},${colour[1][1]},${colour[1][2]},${colour[1][3]}) 100%)`
@@ -635,6 +641,12 @@ setInterval(function(){
                 document.querySelector(".handR").style.left = "16px"
                 document.querySelector(".handR").style.top = "0px"
             }
+        }
+
+        if (player.axes){
+            document.querySelector(".peakMan").style.backgroundImage = "url(img/peakManAxeless.png)"
+        } else {
+            document.querySelector(".peakMan").style.backgroundImage = "url(img/peakMan.png)"
         }
 
         if (player.axes){
