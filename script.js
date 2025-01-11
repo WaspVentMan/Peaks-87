@@ -40,6 +40,8 @@ let holds = []
 let punishment = 0.1
 let deathtimeout = []
 let deathcam = 0
+let tick = Date.now()
+let start = 0
 
 let sounds = []
 function sfx(sound, vol = 100){
@@ -182,6 +184,9 @@ function gametime(){
 }
 
 setInterval(function(){
+    let d = (Date.now()-tick)/1000
+    tick = Date.now()
+
     // LOGIC
     gametime()
 
@@ -210,6 +215,7 @@ setInterval(function(){
             }
 
             holds = []
+            start = Date.now()
 
             sfxClear()
 
@@ -259,6 +265,7 @@ setInterval(function(){
             }
 
             holds = []
+            start = Date.now()
 
             sfxClear()
 
@@ -300,8 +307,8 @@ setInterval(function(){
         document.querySelector(".boards").style.display = "none"
 
         if (player.anchor == null){
-            player.pos[0] += player.vel[0]
-            player.pos[1] += player.vel[1]
+            player.pos[0] += (player.vel[0]*60)*d
+            player.pos[1] += (player.vel[1]*60)*d
 
             if (player.pos[1] < 64){
                 player.vel[1] = 0
@@ -309,9 +316,9 @@ setInterval(function(){
                 player.crampon = 1
 
                 if (player.pos[0] + player.vel[0] > 249){
-                    player.vel[0] -= 0.5
+                    player.vel[0] -= (0.5*60)*d
                 } else if (player.pos[0] + player.vel[0] < 247){
-                    player.vel[0] += 0.5
+                    player.vel[0] += (0.5*60)*d
                 }
                 
                 if (key.ArrowUp){
@@ -336,7 +343,11 @@ setInterval(function(){
                     held.x = true
                     held.z = true
         
-                    player.vel[1] += 5/player.crampon
+                    if (player.vel[1] < 0 && player.crampon < 4){
+                        player.vel[1] = 5/player.crampon
+                    } else {
+                        player.vel[1] += 5/player.crampon
+                    }
 
                     if (player.crampon < 4){
                         sfx("audio/jump" + Math.ceil(Math.random()*4) + ".wav")
@@ -353,7 +364,7 @@ setInterval(function(){
                 player.axes = !player.axes
             }
 
-            player.vel[1] -= 0.25
+            player.vel[1] -= (0.2*60)*d
         
             if (key.z){
                 for (let x = 0; x < holds.length; x++){
@@ -407,20 +418,20 @@ setInterval(function(){
 
             if (key.ArrowLeft){
                 held.ArrowLeft = true
-                player.vel -= 0.2
+                player.vel -= (0.2*60)*d
             }
         
             if (key.ArrowRight){
                 held.ArrowRight = true
-                player.vel += 0.2
+                player.vel += (0.2*60)*d
             }
 
             if (player.rot +90 < 0){
-                player.vel += 0.3
+                player.vel += (0.3*60)*d
             }
 
             if (player.rot +90 > 0){
-                player.vel -= 0.3
+                player.vel -= (0.3*60)*d
             }
 
             if (player.rot > 90){
@@ -431,8 +442,15 @@ setInterval(function(){
                 player.rot += 360
             }
 
-            player.vel *= 0.99
-            player.rot += player.vel
+            player.rot += (player.vel*60)*d
+
+            if (player.vel > 30 && player.vel < 31){
+                player.vel = 30
+            }
+
+            if (player.vel < -30 && player.vel > -31){
+                player.vel = -30
+            }
 
             if (!key[["z", "x"][player.gripper]]){
                 let velcache = Object.assign({}, [player.vel])
@@ -646,7 +664,7 @@ setInterval(function(){
         if (player.axes){
             document.querySelector(".peakMan").style.backgroundImage = "url(img/peakManAxeless.png)"
         } else {
-            document.querySelector(".peakMan").style.backgroundImage = "url(img/peakMan.png)"
+            document.querySelector(".peakMan").style.backgroundImage = "url(img/peakMan.png )"
         }
 
         if (player.axes){
@@ -665,8 +683,7 @@ setInterval(function(){
             document.querySelector(".handR").style.backgroundImage = "url(img/handR.png)"
         }
 
-        document.querySelector(".holds").innerHTML = renderString(player.holds + "h")
-        document.querySelector(".height").innerHTML = renderString(Math.round(player.best/16) + "m")
+        renderUI()
     }
 
     if (player.best > 256){
