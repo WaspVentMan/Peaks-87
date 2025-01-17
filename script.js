@@ -30,7 +30,7 @@ if (saveData != null){
     scores = JSON.parse(saveData)
 }
 
-let wind = new Audio("audio/highwind.wav")
+let wind = new Audio(sounddict.wind)
 wind.loop = true
 wind.volume = 0
 
@@ -42,30 +42,8 @@ let deathtimeout = []
 let deathcam = 0
 let tick = Date.now()
 let start = 0
-
-let sounds = []
-function sfx(sound, vol = 100){
-    let a = new Audio(sound)
-    a.play()
-    a.volume = vol/100
-    sounds.push(a)
-
-    if (sounds.length > 32){
-        sounds[0].pause()
-        sounds.splice(0, 1)
-    }
-}
-
-function sfxClear(){
-    for (let x = 0; x < deathtimeout.length; x++){
-        clearTimeout(deathtimeout[x])
-    }
-    for (let x = 0; x < sounds.length; x++){
-        sounds[x].pause()
-    }
-    deathtimeout = []
-    sounds = []
-}
+let lastcramp = 0
+let lastaxe = 0
 
 function gametime(){
     let time = new Date()
@@ -187,6 +165,11 @@ setInterval(function(){
     let d = (Date.now()-tick)/1000
     tick = Date.now()
 
+    if (mobile){
+        document.body.style.zoom = "100%"
+        document.body.style.userSelect = "none"
+    }
+
     // LOGIC
     gametime()
 
@@ -195,7 +178,7 @@ setInterval(function(){
         window.open(window.location.href, '_blank').focus()
     }
 
-    if (document.querySelector(".loadZoneDeluxe").style.width != "0px"){return}
+    if (document.querySelector(".loadZoneDeluxe").style.display != "none"){return}
 
     if (document.querySelector(".credits").style.display != "none"){return}
 
@@ -284,7 +267,7 @@ setInterval(function(){
             held.ArrowLeft = true
 
             if (punishment != 0.1){
-                sfx("audio/click.wav", 25)
+                sfx("click", 25)
                 punishment /= 10
             }
 
@@ -296,7 +279,7 @@ setInterval(function(){
             held.ArrowRight = true
             
             if (punishment != 100){
-                sfx("audio/click.wav", 25)
+                sfx("click", 25)
                 punishment *= 10
             }
             leaderboard = "z"
@@ -311,6 +294,8 @@ setInterval(function(){
             player.pos[1] += (player.vel[1]*60)*d
 
             if (player.pos[1] < 64){
+                document.querySelector(".touchButtU").style.display = "block"
+                start = Date.now()
                 player.vel[1] = 0
                 player.pos[1] = 64
                 player.crampon = 1
@@ -323,12 +308,13 @@ setInterval(function(){
                 
                 if (key.ArrowUp){
                     held.ArrowUp = true
-                    sfx("audio/jump" + Math.ceil(Math.random()*4) + ".wav")
+                    sfx("jump" + Math.ceil(Math.random()*4))
                     player.vel[1] = 5
                 }
 
                 player.vel[0] *= 0.8
             } else {
+                document.querySelector(".touchButtU").style.display = "none"
                 if (key.ArrowLeft){
                     held.ArrowLeft = true
                     player.vel[0] -= 0.1
@@ -339,10 +325,11 @@ setInterval(function(){
                     player.vel[0] += 0.1
                 }
 
-                if (key.x && key.z && !held.z && !held.z && player.pos[0] > 112 && player.pos[0] < 400){
+                if (key.x && key.z && (lastcramp+250 < Date.now() || (!held.x && !held.z)) && player.pos[0] > 96 && player.pos[0] < 400){
                     held.x = true
                     held.z = true
-        
+                    lastcramp = Date.now()
+                    
                     if (player.vel[1] < 0 && player.crampon < 4){
                         player.vel[1] = 5/player.crampon
                     } else {
@@ -350,17 +337,18 @@ setInterval(function(){
                     }
 
                     if (player.crampon < 4){
-                        sfx("audio/jump" + Math.ceil(Math.random()*4) + ".wav")
+                        sfx("jump" + Math.ceil(Math.random()*4))
                     } else {
-                        sfx("audio/cramponfail" + Math.ceil(Math.random()*3) + ".wav")
+                        sfx("cramponfail" + Math.ceil(Math.random()*3))
                     }
 
                     player.crampon++
                 }
             }
 
-            if (key.ArrowDown && !held.ArrowDown){
+            if (key.ArrowDown && (!held.ArrowDown || lastaxe+250 < Date.now())){
                 held.ArrowDown = true
+                lastaxe = Date.now()
                 player.axes = !player.axes
             }
 
@@ -376,10 +364,10 @@ setInterval(function(){
                         player.vel = player.vel[1]*2
 
                         if (!player.axes){
-                            sfx("audio/grab" + Math.ceil(Math.random()*3) + ".wav")
+                            sfx("grab" + Math.ceil(Math.random()*3))
                         } else {
-                            sfx("audio/axehit" + Math.ceil(Math.random()*3) + ".wav")
-                            sfx("audio/axecrunch" + Math.ceil(Math.random()*3) + ".wav")
+                            sfx("axehit" + Math.ceil(Math.random()*3))
+                            sfx("axecrunch" + Math.ceil(Math.random()*3))
                         }
 
                         player.holds++
@@ -398,10 +386,10 @@ setInterval(function(){
                         player.vel = -player.vel[1]*2
                         
                         if (!player.axes){
-                            sfx("audio/grab" + Math.ceil(Math.random()*3) + ".wav")
+                            sfx("grab" + Math.ceil(Math.random()*3))
                         } else {
-                            sfx("audio/axehit" + Math.ceil(Math.random()*3) + ".wav")
-                            sfx("audio/axecrunch" + Math.ceil(Math.random()*3) + ".wav")
+                            sfx("axehit" + Math.ceil(Math.random()*3))
+                            sfx("axecrunch" + Math.ceil(Math.random()*3))
                         }
 
                         player.holds++
@@ -488,12 +476,12 @@ setInterval(function(){
 
             if (!offline){NGIO.postScore(deathboard, Math.round(player.best/16)*100, function(){})}
 
-            sfx("audio/fall" + Math.ceil(Math.random()*4) + ".wav", 50)
-            deathtimeout.push(setTimeout(function(){sfx("audio/fall" + Math.ceil(Math.random()*4) + ".wav", 25)}, 1000))
-            deathtimeout.push(setTimeout(function(){sfx("audio/fall" + Math.ceil(Math.random()*4) + ".wav", 12.5)}, 2000))
-            deathtimeout.push(setTimeout(function(){sfx("audio/fall" + Math.ceil(Math.random()*4) + ".wav", 6.25)}, 3000))
-            deathtimeout.push(setTimeout(function(){sfx("audio/fall" + Math.ceil(Math.random()*4) + ".wav", 3.125)}, 4000))
-            deathtimeout.push(setTimeout(function(){sfx("audio/fall" + Math.ceil(Math.random()*4) + ".wav", 1.5625)}, 5000))
+            sfx("fall" + Math.ceil(Math.random()*4), 50)
+            deathtimeout.push(setTimeout(function(){sfx("fall" + Math.ceil(Math.random()*4), 25)}, 1000))
+            deathtimeout.push(setTimeout(function(){sfx("fall" + Math.ceil(Math.random()*4), 12.5)}, 2000))
+            deathtimeout.push(setTimeout(function(){sfx("fall" + Math.ceil(Math.random()*4), 6.25)}, 3000))
+            deathtimeout.push(setTimeout(function(){sfx("fall" + Math.ceil(Math.random()*4), 3.125)}, 4000))
+            deathtimeout.push(setTimeout(function(){sfx("fall" + Math.ceil(Math.random()*4), 1.5625)}, 5000))
 
             best = false
             let prepos = 0
@@ -505,7 +493,9 @@ setInterval(function(){
                 prepos++
             }
 
-            if (scores[prepos][0] == "YOU" && scores[prepos][1] < Math.round(player.best/16)){best = true}
+            try {
+                if (scores[prepos][0] == "YOU" && scores[prepos][1] < Math.round(player.best/16)){best = true}
+            } catch {}
 
             for (let x = 0; x < 10; x++){
                 if (scores[9-x][1] > Math.round(player.best/16)){
@@ -532,12 +522,12 @@ setInterval(function(){
                 if (postpos == 0 && prepos != 0 && scores[1][0] == "SLM"){
                     playCredits("none", true)
                 } else {
-                    sfx("audio/ForestA.mp3", 15)
+                    sfx("ForestA", 15)
                 }
             } else {
-                sfx("audio/ExecutiveOffice.mp3", 15)
+                sfx("ExecutiveOffice", 15)
                 if (Math.round(player.best/16) == 87){
-                    sfx("audio/87.mp3")
+                    sfx("87")
                 }
             }
 

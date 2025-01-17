@@ -1,3 +1,6 @@
 * {
     image-rendering: pixelated;
+    overflow: hidden;
+    user-select: none;
+    touch-action: manipulation;
 }
