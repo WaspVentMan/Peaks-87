@@ -153,17 +153,18 @@
         <div class="assetCount" style="display: flex; width: max-content; margin: auto;"></div>
     </div>
     <script>
+        let toload = 106
         let loaded = 0
         let loadLoop = setInterval(function(){
             heightText = ""
 
-            for (let x = 0; x < (loaded + "_of_87").length; x++){
-                heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${(loaded + "_of_87")[x]}.png);"></div>`
+            for (let x = 0; x < (loaded + "_of_" + toload).length; x++){
+                heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${(loaded + "_of_" + toload)[x]}.png);"></div>`
             }
 
             document.querySelector(".assetCount").innerHTML = heightText.toLocaleLowerCase()
 
-            if (loaded >= 62){
+            if (loaded >= toload - (25*mobile)){
                 setTimeout(function(){
                     document.querySelector(".loadZoneDeluxe").style.display = "none"
                 }, 500)
@@ -242,6 +243,26 @@
         <img onload="loaded++" src="img/letter/x.png">
         <img onload="loaded++" src="img/letter/y.png">
         <img onload="loaded++" src="img/letter/z.png">
+        <img onload="loaded++" src="img/holds/bigpocket.png">
+        <img onload="loaded++" src="img/holds/dangeregg.png">
+        <img onload="loaded++" src="img/holds/edgecrimp.png">
+        <img onload="loaded++" src="img/holds/edgecrimp2.png">
+        <img onload="loaded++" src="img/holds/edgecrimp3.png">
+        <img onload="loaded++" src="img/holds/edgecrimp4.png">
+        <img onload="loaded++" src="img/holds/fingercrimp.png">
+        <img onload="loaded++" src="img/holds/handjam.png">
+        <img onload="loaded++" src="img/holds/hold.png">
+        <img onload="loaded++" src="img/holds/icebigpocket.png">
+        <img onload="loaded++" src="img/holds/icedangeregg.png">
+        <img onload="loaded++" src="img/holds/iceedgecrimp.png">
+        <img onload="loaded++" src="img/holds/iceedgecrimp2.png">
+        <img onload="loaded++" src="img/holds/iceedgecrimp3.png">
+        <img onload="loaded++" src="img/holds/iceedgecrimp4.png">
+        <img onload="loaded++" src="img/holds/icefingercrimp.png">
+        <img onload="loaded++" src="img/holds/icehandjam.png">
+        <img onload="loaded++" src="img/holds/icehold.png">
+        <img onload="loaded++" src="img/holds/icepinch.png">
+        <img onload="loaded++" src="img/holds/pinch.png">
         <img onload="loaded++" src="img/cliff.png">
         <img onload="loaded++" src="img/ground.png">
         <img onload="loaded++" src="img/handclampL.png">
@@ -250,7 +271,6 @@
         <img onload="loaded++" src="img/handaxeR.png">
         <img onload="loaded++" src="img/handL.png">
         <img onload="loaded++" src="img/handR.png">
-        <img onload="loaded++" src="img/hold.png">
         <img onload="loaded++" src="img/peakMan.png">
         <img onload="loaded++" src="img/peakManAxeless.png">
         <img onload="loaded++" src="img/logo.png">

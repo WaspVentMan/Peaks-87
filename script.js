@@ -44,6 +44,7 @@ let tick = Date.now()
 let start = 0
 let lastcramp = 0
 let lastaxe = 0
+let holdbiome = "normal"
 
 function gametime(){
     let time = new Date()
@@ -564,6 +565,7 @@ setInterval(function(){
         }
 
         if (holds.length == 0){
+            holdbiome = ["normal", "crack", "clutter", "classic", "inset"][Math.floor(Math.random()*4)]
             holds.push([256, 96, false])
 
             let newHold = document.createElement("div")
@@ -571,9 +573,21 @@ setInterval(function(){
             newHold.style.top = 512 - holds[holds.length-1][1] + "px"
             newHold.style.left = holds[holds.length-1][0] + "px"
             newHold.style.position = "absolute"
-            newHold.style.backgroundImage = "url(img/hold.png)"
             newHold.style.width = "16px"
             newHold.style.height = "16px"
+
+            let ice = false
+            if (holdbiome == "normal"){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "hold"][Math.floor(Math.random()*4)] + ".png)"
+            } else if (holdbiome == "crack"){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"][Math.floor(Math.random()*4)] + ".png)"
+            } else if (holdbiome == "clutter"){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "handjam", "hold", "pinch", "edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"][Math.floor(Math.random()*10)] + ".png)"
+            } else if (holdbiome == "classic"){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "hold.png)"
+            } else if (holdbiome == "inset"){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "handjam"][Math.floor(Math.random()*2)] + ".png)"
+            }
 
             document.querySelector(".holdzone").appendChild(newHold)
         }
@@ -581,6 +595,30 @@ setInterval(function(){
             let holdx = holds[holds.length-1][0] + Math.round(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4)-(((holds[holds.length-1][1]/(2560/punishment))+4)/2))*16
             let holdy = holds[holds.length-1][1] + (Math.ceil(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4))*16)
             
+            if (Math.random() < 0.01){
+                holdbiome = ["normal", "crack", "clutter", "classic", "inset"][Math.floor(Math.random()*4)]
+            }
+
+            if (holdbiome == "crack" && holds.length >= 2){
+                holdx = holds[holds.length-1][0]
+                holdy = holds[holds.length-1][1] + 16
+
+                if (Math.random() < 0.1){
+                    holdx += Math.round(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4)-(((holds[holds.length-1][1]/(2560/punishment))+4)/2))*16
+                    holdy += Math.ceil(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4))*16
+                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp.png")`){
+                    holdx += 16
+                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp2.png")`){
+                    holdx += [-16, 0][Math.floor(Math.random()*2)]
+                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp3.png")`){
+                    holdx -= 16
+                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp4.png")`){
+                    holdx += [16, 0][Math.floor(Math.random()*2)]
+                } else {
+                    holdx += [-16, 0, 16][Math.floor(Math.random()*3)]
+                }
+            }
+
             if (holdx < 128){
                 holdx = 128
                 holdx += Math.round(Math.random()*4)*16
@@ -597,18 +635,45 @@ setInterval(function(){
                 ice = true
             }
 
-            holds.push([holdx, holdy, ice])
-
             let newHold = document.createElement("div")
-            newHold.className = "hold" + holds[holds.length-1][1]
-            newHold.style.top = 512 - holds[holds.length-1][1] + "px"
-            newHold.style.left = holds[holds.length-1][0] + "px"
+            newHold.className = "hold" + holdy
+            newHold.style.top = 512 - holdy + "px"
+            newHold.style.left = holdx + "px"
             newHold.style.position = "absolute"
             newHold.style.width = "16px"
             newHold.style.height = "16px"
 
-            newHold.style.backgroundImage = "url(img/" + ["hold", "icehold"][ice+0] + ".png)"
-            
+            if (holdbiome == "normal"){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "hold"][Math.floor(Math.random()*4)] + ".png)"
+            } else if (holdbiome == "crack"){
+                if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp.png")`){
+                    newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp4.png)"
+                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp2.png")`){
+                    if (holdx - holds[holds.length-1][0] == 0){
+                        newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp", "edgecrimp4"][Math.floor(Math.random()*2)] + ".png)"
+                    } else if (holdx - holds[holds.length-1][0] == -16){
+                        newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp3.png)"
+                    }
+                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp3.png")`){
+                    newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp2.png)"
+                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp4.png")`){
+                    if (holdx - holds[holds.length-1][0] == 0){
+                        newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp2", "edgecrimp3"][Math.floor(Math.random()*2)] + ".png)"
+                    } else if (holdx - holds[holds.length-1][0] == 16){
+                        newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp.png)"
+                    }
+                } else {
+                    newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"][Math.floor(Math.random()*4)] + ".png)"
+                }
+            } else if (holdbiome == "clutter"){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "handjam", "hold", "pinch", "edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"][Math.floor(Math.random()*10)] + ".png)"
+            } else if (holdbiome == "classic"){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "hold.png)"
+            } else if (holdbiome == "inset"){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "handjam"][Math.floor(Math.random()*2)] + ".png)"
+            }
+            holds.push([holdx, holdy, ice])
+
             document.querySelector(".holdzone").appendChild(newHold)
         }
         
@@ -689,10 +754,8 @@ setInterval(function(){
             document.querySelector(".paralax"+x).style.bottom = "-32px"
         }
     }
-}, 1000/60)
 
-setInterval(function(){
-    if (!document.hasFocus()) {
+    if (!document.hasFocus() && !mobile) {
         document.querySelector(".focus").style.display = 'block'
     }
-})
+}, 1000/60)
