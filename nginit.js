@@ -2,7 +2,7 @@ let offline = true
 
 // Set up the options for NGIO.
 var options = {
-    version: "1.3.2",
+    version: "2.0.0",
     preloadScoreBoards: true,
     preloadMedals: true,
     preloadSaveSlots: true
@@ -11,13 +11,7 @@ var options = {
 NGIO.init("59514:7LSeS0Bb", "nLp7V+3Uk6kcOsAzvgpOqQ==", options);
 
 let ngLoop = setInterval(function(){
-    let heightText = ""
-
-    for (let x = 0; x < ["ONLINE", "OFFLINE"][offline+0].length; x++){
-        heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${["ONLINE", "OFFLINE"][offline+0][x]}.png);"></div>`
-    }
-
-    document.querySelector(".con").innerHTML = heightText.toLocaleLowerCase()
+    document.querySelector(".con").innerHTML = renderString(["ONLINE", "OFFLINE"][offline+0])
     NGIO.getConnectionStatus(function(status) {
         
         switch (status) {
@@ -25,17 +19,11 @@ let ngLoop = setInterval(function(){
             // we have version and license info
             case NGIO.STATUS_LOCAL_VERSION_CHECKED:
 
-                let heightText = ""
                 if (NGIO.isDeprecated) {
-                    for (let x = 0; x < ("v" + options.version + " old").length; x++){
-                        heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${("v" + options.version.replaceAll(".", ",") + "_old")[x]}.png);"></div>`
-                    }
+                    document.querySelector(".ver").innerHTML = renderString("v" + options.version + " old")
                 } else {
-                    for (let x = 0; x < ("v" + options.version).length; x++){
-                        heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${("v" + options.version.replaceAll(".", ","))[x]}.png);"></div>`
-                    }
+                    document.querySelector(".ver").innerHTML = renderString("v" + options.version)
                 }
-                document.querySelector(".ver").innerHTML = heightText.toLocaleLowerCase()
 
                 if (!NGIO.legalHost) {
                     document.body.innerHTML = "<h1>THIS GAME IS BEING HOSTED ILLEGALLY, GO TO <a href=\"https://waspventman.co.uk\">WASPVENTMAN.CO.UK</a> OR <a href=\"https://waspventman.newgrounds.com/\">WASPVENTMAN.NEWGROUNDS.COM</a></h1>"
@@ -52,6 +40,7 @@ let ngLoop = setInterval(function(){
             // user needs to log in
             case NGIO.STATUS_READY:
                 offline = false
+                buildSettings()
                 break
         }
 

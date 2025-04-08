@@ -15,9 +15,9 @@ let player = {
 let scores = [
     ["SLM", 7464],
     ["BUL", 2288],
-    ["MHó", 2017],
+    ["MHO", 2017],
     ["ELD", 1476],
-    ["VíS", 1370],
+    ["VIS", 1370],
     ["YMR", 543],
     ["WLK", 536],
     ["DND", 495],
@@ -25,9 +25,144 @@ let scores = [
     ["EIN", 394]
 ]
 
+let settings = {
+    "menu": {
+        "selection": 0,
+        "lockin": false,
+        "options": [
+            {
+                "name": "save and return to menu",
+                "value": undefined,
+                "var": "menu"
+            },
+            {
+                "name": "newgrounds",
+                "value": "log in",
+                "var": "ng",
+                "title": true
+            },
+            {
+                "name": "screen zoom",
+                "value": "$x zoom",
+                "var": "zoom"
+            },
+            {
+                "name": "grayscale",
+                "value": "$",
+                "var": "grayscale",
+                "handler": "bool"
+            },
+            {
+                "name": "punishment level",
+                "value": "PUNISHMENT LV.$",
+                "var": "punishment"
+            },
+            {
+                "name": "debug menu options",
+                "value": "titles: $",
+                "var": "debugtitles",
+                "handler": "bool",
+                "title": true
+            },
+            {
+                "name": "generation debug",
+                "value": "generation: $",
+                "var": "debuggen",
+                "handler": "bool",
+                "small": true
+            },
+            {
+                "name": "ice debug",
+                "value": "ice: $",
+                "var": "debugice",
+                "handler": "bool",
+                "small": true
+            },
+            {
+                "name": "game debug",
+                "value": "game: $",
+                "var": "debugpef",
+                "handler": "bool",
+                "small": true
+            }
+        ]
+    },
+    "zoom": 1,
+    "grayscale": false,
+    "punishment": 0.1,
+    "debugtitles": true,
+    "debuggen": false,
+    "debugpef": false,
+    "debugice": false
+}
+
+let title = {
+    "selection": 0,
+    "options": [
+        "start",
+        "scores",
+        "settings",
+        "credits"
+    ]
+}
+
+let deathMenu = {
+    "selection": 0,
+    "options": [
+        "quick restart",
+        "back to title",
+        "toggle scores"
+    ]
+}
+
+let subtitles = {
+    "intro": [
+        {
+            "m": "Good morning lad.",
+            "a": "Good afternoon lad.",
+            "e": "Good evening lad."
+        },
+        "I'm a lawyer here on the behalf of the official ascencion society.",
+        "If you want to climb forevisir you'll need to sign this here waiver.",
+        "It's a bloody dangerous climb, and we don't want to be sued by your next of kin."
+    ],
+    "waiver_signed": [
+        "Thank you, lad.",
+        "The mountain is calling.",
+        "Have a good climb."
+    ]
+}
+
 let saveData = localStorage.getItem("PEAKS87")
 if (saveData != null){
     scores = JSON.parse(saveData)
+    
+    for (let x = 0; x < scores.length; x++){
+        if (scores[x][0] == "MHó"){
+            scores[x][0] = "MHO"
+        }
+
+        if (scores[x][0] == "VíS"){
+            scores[x][0] = "VIS"
+        }
+    }
+}
+
+for (let x = 0; x < scores.length; x++){
+    if (scores[x][0] == "YOU"){
+        player.best = scores[x][1]*16
+        break
+    }
+}
+
+let saveSett = localStorage.getItem("PEAKS87SETTINGS")
+if (saveSett != null){
+    saveSett = JSON.parse(saveSett)
+
+    for (let x = 0; x < Object.keys(saveSett).length; x++){
+        if(Object.keys(saveSett)[x]=="menu"){continue}
+        settings[Object.keys(saveSett)[x]] = saveSett[Object.keys(saveSett)[x]]
+    }
 }
 
 let wind = new Audio(sounddict.wind)
@@ -162,59 +297,9 @@ function gametime(){
     document.querySelector(".gameWindow").style.background = `linear-gradient(180deg, rgba(${colour[0][0]},${colour[0][1]},${colour[0][2]},${colour[0][3]}) 0%, rgba(${colour[1][0]},${colour[1][1]},${colour[1][2]},${colour[1][3]}) 100%)`
 }
 
-setInterval(function(){
-    let d = (Date.now()-tick)/1000
-    tick = Date.now()
-
-    if (mobile){
-        document.body.style.zoom = "100%"
-        document.body.style.userSelect = "none"
-    }
-
-    // LOGIC
-    gametime()
-
-    if (key.f && !held.f && window.location != window.parent.location){
-        held.f = true
-        window.open(window.location.href, '_blank').focus()
-    }
-
-    if (document.querySelector(".loadZoneDeluxe").style.display != "none"){return}
-
-    if (document.querySelector(".credits").style.display != "none"){return}
-
-    if (document.querySelector(".title").style.display != "none"){
-        if (key.z && !held.z){
-            player = {
-                "pos": [[-64, 576][Math.round(Math.random())], 0],
-                "vel": [0, 0],
-                "rot": 0,
-                "gripper": 0,
-                "anchor": null,
-                "best": 0,
-                "dead": false,
-                "holds": 0,
-                "crampon": 1,
-                "axes": false
-            }
-
-            holds = []
-            start = Date.now()
-
-            sfxClear()
-
-            document.querySelector(".holdzone").innerHTML = ""
-            document.querySelector(".gameOver").style.display = "none"
-            document.querySelector(".title").style.display = "none"
-        } else if (key.x && !held.x){
-            document.querySelector(".title").style.display = "none"
-            playCredits("block")
-        }
-        return
-    }
-
-    if (player.dead){
-        if (player.best > 256){
+function scroll(){
+    if (player.best > 256){
+        if (player.dead){
             player.best -= deathcam/10
 
             let deathcambreak = 0
@@ -233,58 +318,431 @@ setInterval(function(){
 
             document.querySelector(".player").style.left = "-10000px"
         }
+        
+        document.querySelector(".game").style.top = Math.round(player.best - 256) + "px"
+        document.querySelector(".towerRender").style.top = (Math.round((player.best - 256)%1024)-1024) + "px"
+        for (let x = 0; x < 14; x++){
+            document.querySelector(".paralax"+x).style.bottom = Math.round(-32-((player.best-256)/((x+2)**2))) + "px"
+        }
+    } else {
+        document.querySelector(".game").style.top = "0px"
+        document.querySelector(".towerRender").style.top = "0px"
+        for (let x = 0; x < 14; x++){
+            document.querySelector(".paralax"+x).style.bottom = "-32px"
+        }
+    }
+}
 
-        if (key.z && key.x){
-            player = {
-                "pos": [[-64, 576][Math.round(Math.random())], 0],
-                "vel": [0, 0],
-                "rot": 0,
-                "gripper": 0,
-                "anchor": null,
-                "best": 0,
-                "dead": false,
-                "holds": 0,
-                "crampon": 1,
-                "axes": false
+function generateHolds(force=false){
+    let generated = 0
+    while (holds.length == 0 || holds[holds.length-1][1] < player.best + 512 || force && generated == 0){
+        generated++
+
+        let holdx = 0
+        let holdy = 0
+        let ice = false
+
+        let genDebug = []
+
+        if (settings.debugtitles && settings.debuggen){
+            genDebug.push("")
+            genDebug.push("- hold info -")
+        }
+
+        if (holds.length == 0){
+            holdx = 256
+            holdy = 96
+            holdbiome = "normal"
+        } else {
+            holdx = holds[holds.length-1][0] + Math.round(Math.random()*((holds[holds.length-1][1]/(2560/settings.punishment))+4)-(((holds[holds.length-1][1]/(2560/settings.punishment))+4)/2))*16
+            holdy = holds[holds.length-1][1] + (Math.ceil(Math.random()*((holds[holds.length-1][1]/(2560/settings.punishment))+4))*16)
+            if (Math.random() < settings.punishment/10){
+                holdbiome = ["normal", "crack", "clutter", "classic", "inset"][Math.floor(Math.random()*4)]
             }
+        }
 
-            holds = []
-            start = Date.now()
+        if (holdbiome == "crack" && holds.length >= 2){
+            holdx = holds[holds.length-1][0]
+            holdy = holds[holds.length-1][1] + 16
 
-            sfxClear()
+            if (Math.random() < 0.1){
+                holdx += Math.round(Math.random()*((holds[holds.length-1][1]/(2560/settings.punishment))+4)-(((holds[holds.length-1][1]/(2560/settings.punishment))+4)/2))*16
+                holdy += Math.ceil(Math.random()*((holds[holds.length-1][1]/(2560/settings.punishment))+4))*16
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp.png")`){
+                holdx += 16
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp2.png")`){
+                holdx += [-16, 0][Math.floor(Math.random()*2)]
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp3.png")`){
+                holdx -= 16
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp4.png")`){
+                holdx += [16, 0][Math.floor(Math.random()*2)]
+            } else {
+                holdx += [-16, 0, 16][Math.floor(Math.random()*3)]
+            }
+        }
 
-            document.querySelector(".holdzone").innerHTML = ""
-            document.querySelector(".gameOver").style.display = "none"
-        } else if (key.z && !held.z && leaderboard != "z"){
-            held.z = true
-            leaderboard = "z"
-            renderLB()
-        } else if (key.x && !held.x && leaderboard != "x"){
+        if (holdx < 128){
+            holdx = 128
+            holdx += Math.round(Math.random()*4)*16
+        }
+        
+        if (holdx > 384){
+            holdx = 384
+            holdx -= Math.round(Math.random()*4)*16
+        }
+
+        if (settings.debuggen){
+            genDebug.push("biome: " + holdbiome)
+            genDebug.push("x: " + holdx)
+            genDebug.push("y: " + holdy)
+        }
+
+        if (Math.random() < ((holdy)/(16000/settings.punishment)) && holdy > 16000){
+            ice = true
+        }
+
+        if (settings.debugtitles && settings.debugice){
+            genDebug.push("")
+            genDebug.push("- ice info -")
+        }
+
+        if (settings.debugice){
+            genDebug.push("ice: " + ice)
+            genDebug.push("spawnable: " + (holdy>16000))
+            genDebug.push("chance: " + Math.round(((holdy)/(16000/settings.punishment))*10000)/100 + "%")
+        }
+
+        let newHold = document.createElement("div")
+        newHold.className = "hold" + holdy
+        newHold.style.top = 512 - holdy + "px"
+        newHold.style.left = holdx + "px"
+        newHold.style.position = "absolute"
+        newHold.style.width = "16px"
+        newHold.style.height = "16px"
+
+        if (holdbiome == "normal"){
+            newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "hold"][Math.floor(Math.random()*4)] + ".png)"
+        } else if (holdbiome == "crack"){
+            if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp.png")`){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp4.png)"
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp2.png")`){
+                if (holdx - holds[holds.length-1][0] == 0){
+                    newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp", "edgecrimp4"][Math.floor(Math.random()*2)] + ".png)"
+                } else if (holdx - holds[holds.length-1][0] == -16){
+                    newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp3.png)"
+                }
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp3.png")`){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp2.png)"
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp4.png")`){
+                if (holdx - holds[holds.length-1][0] == 0){
+                    newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp2", "edgecrimp3"][Math.floor(Math.random()*2)] + ".png)"
+                } else if (holdx - holds[holds.length-1][0] == 16){
+                    newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp.png)"
+                }
+            } else {
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"][Math.floor(Math.random()*4)] + ".png)"
+            }
+        } else if (holdbiome == "clutter"){
+            newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "handjam", "hold", "pinch", "edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"][Math.floor(Math.random()*10)] + ".png)"
+        } else if (holdbiome == "classic"){
+            newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "hold.png)"
+        } else if (holdbiome == "inset"){
+            newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "handjam"][Math.floor(Math.random()*2)] + ".png)"
+        }
+        holds.push([holdx, holdy, ice])
+
+        document.querySelector(".debugG").innerHTML = renderStrings(genDebug, "default", "right")
+        document.querySelector(".holdzone").appendChild(newHold)
+    }
+}
+
+generateHolds()
+buildTitle()
+buildSettings()
+buildDeath()
+
+setInterval(function(){
+    let d = (Date.now()-tick)/1000
+    tick = Date.now()
+
+    let pefDebug = []
+    if (settings.debugpef){
+        if (settings.debugtitles){
+            pefDebug.push("")
+            pefDebug.push("- game info -")
+        }
+
+        pefDebug.push("tick: " + d*1000+"ms")
+    }
+
+    document.querySelector(".debugP").innerHTML = renderStrings(pefDebug, "default", "right")
+
+    if (!document.hasFocus() && !mobile){
+        document.querySelector(".focus").style.display = 'block'
+    }
+
+    if (document.querySelector(".focus").style.display == 'block'){return}
+
+    if (mobile){
+        document.body.style.zoom = "100%"
+        document.body.style.userSelect = "none"
+    }
+
+    if (settings.grayscale){
+        document.querySelector(".gameWindow").style.filter = "grayscale(100%)"
+    } else {
+        document.querySelector(".gameWindow").style.filter = "grayscale(0%)"
+    }
+
+    document.querySelector(".gameWindow").style.zoom = settings.zoom*100 + "%"
+
+    // LOGIC
+    gametime()
+    if (player.dead){scroll()}
+
+    if (document.querySelector(".loadZoneDeluxe").style.display != "none"){return}
+    if (document.querySelector(".credits").style.display != "none"){return}
+
+    if (document.querySelector(".settings").style.display != "none"){
+        if (key.x && !held.x){
             held.x = true
-            leaderboard = "x"
-            renderLB()
-        }
-        if (key.ArrowLeft && !held.ArrowLeft){
-            held.ArrowLeft = true
 
-            if (punishment != 0.1){
-                sfx("click", 25)
-                punishment /= 10
-            }
+            document.querySelector(".settings").style.display = "none"
+            document.querySelector(".title").style.display = "block"
 
-            leaderboard = "z"
-            renderLB()
+            localStorage.setItem("PEAKS87SETTINGS", JSON.stringify(settings))
+            return
         }
 
-        if (key.ArrowRight && !held.ArrowRight){
-            held.ArrowRight = true
-            
-            if (punishment != 100){
-                sfx("click", 25)
-                punishment *= 10
+        if (key.z && !held.z){
+            held.z = true
+            sfx("click", 25)
+
+            if (settings.menu.selection == 0){
+                document.querySelector(".settings").style.display = "none"
+                document.querySelector(".title").style.display = "block"
+
+                localStorage.setItem("PEAKS87SETTINGS", JSON.stringify(settings))
+                return
             }
-            leaderboard = "z"
-            renderLB()
+
+            if (settings.menu.options[settings.menu.selection].var == "zoom" && window.location != window.parent.location){
+                window.open(window.location.href, '_blank').focus()
+                location.reload()
+            }
+
+            if (settings.menu.options[settings.menu.selection].var == "ng"){
+                if (offline){
+                    NGIO.openLoginPage()
+                    buildSettings()
+                }
+                
+                return
+            }
+
+            settings.menu.lockin = !settings.menu.lockin
+            buildSettings()
+        }
+
+        if ((key.ArrowLeft && !held.ArrowLeft || key.ArrowRight && !held.ArrowRight) && settings.menu.lockin){
+            held.ArrowLeft = key.ArrowLeft
+            held.ArrowRight = key.ArrowRight
+
+            if (settings.menu.options[settings.menu.selection].handler != undefined){
+                switch (settings.menu.options[settings.menu.selection].handler){
+                    case "bool":
+                        sfx("click", 25)
+                        settings[settings.menu.options[settings.menu.selection].var] = !settings[settings.menu.options[settings.menu.selection].var]
+                        break
+                }
+            } else {
+                switch (settings.menu.options[settings.menu.selection].var){
+                    case "zoom":
+                        if (held.ArrowLeft && settings.zoom > 1 && window.location == window.parent.location){
+                            sfx("click", 25)
+                            settings.zoom--
+                        } else if (held.ArrowRight && window.location == window.parent.location){
+                            sfx("click", 25)
+                            settings.zoom++
+                        }
+                        break
+                    
+                    case "punishment":
+                        if (held.ArrowLeft && settings.punishment != 0.1){
+                            sfx("click", 25)
+                            settings.punishment /= 10
+                        } else if (held.ArrowRight && settings.punishment != 100){
+                            sfx("click", 25)
+                            settings.punishment *= 10
+                        }
+                        break
+                }
+            }
+
+            buildSettings()
+        }
+
+        if ((key.ArrowUp && !held.ArrowUp || key.ArrowDown && !held.ArrowDown) && !settings.menu.lockin){
+            held.ArrowUp = key.ArrowUp
+            held.ArrowDown = key.ArrowDown
+
+            if (held.ArrowUp && settings.menu.selection > 0){
+                sfx("click", 25)
+                settings.menu.selection--
+            } else if (held.ArrowDown && settings.menu.selection < settings.menu.options.length-1){
+                sfx("click", 25)
+                settings.menu.selection++
+            }
+
+            buildSettings()
+        }
+
+        return
+    }
+
+    if (document.querySelector(".title").style.display != "none"){
+        if (key.z && !held.z){
+            held.z = true
+
+            switch (title.options[title.selection]){
+                case "start":
+                    player = {
+                        "pos": [[-64, 576][Math.round(Math.random())], 0],
+                        "vel": [0, 0],
+                        "rot": 0,
+                        "gripper": 0,
+                        "anchor": null,
+                        "best": 0,
+                        "dead": false,
+                        "holds": 0,
+                        "crampon": 1,
+                        "axes": false
+                    }
+        
+                    holds = []
+                    start = Date.now()
+        
+                    sfxClear()
+                    sfx("click", 25)
+        
+                    document.querySelector(".holdzone").innerHTML = ""
+                    document.querySelector(".gameOver").style.display = "none"
+                    document.querySelector(".title").style.display = "none"
+                    break
+                
+                case "scores":
+                    sfx("click", 25)
+
+                    document.querySelector(".title").style.display = "none"
+                    document.querySelector(".boards").style.display = "block"
+                    deathMenu.selection = 0
+                    buildDeath()
+                    renderLB()
+                    break
+                
+                case "settings":
+                    settings.menu.selection = 0
+                    sfx("click", 25)
+
+                    document.querySelector(".title").style.display = "none"
+                    document.querySelector(".settings").style.display = "block"
+                    buildSettings()
+                    break
+                
+                case "credits":
+                    sfxClear()
+                    document.querySelector(".title").style.display = "none"
+                    playCredits("block")
+                    break
+            }
+            return
+        }
+
+        if ((key.ArrowUp && !held.ArrowUp || key.ArrowDown && !held.ArrowDown)){
+            held.ArrowUp = key.ArrowUp
+            held.ArrowDown = key.ArrowDown
+
+            if (held.ArrowUp && title.selection > 0){
+                sfx("click", 25)
+                title.selection--
+            } else if (held.ArrowDown && title.selection < title.options.length-1){
+                sfx("click", 25)
+                title.selection++
+            }
+
+            buildTitle()
+        }
+
+        return
+    }
+
+    if (player.dead){
+        document.querySelector(".touchButtU").style.display = "block"
+        if (key.z && !held.z){
+            held.z = true
+
+            switch (deathMenu.options[deathMenu.selection]){
+                case "quick restart":
+                    player = {
+                        "pos": [[-64, 576][Math.round(Math.random())], 0],
+                        "vel": [0, 0],
+                        "rot": 0,
+                        "gripper": 0,
+                        "anchor": null,
+                        "best": 0,
+                        "dead": false,
+                        "holds": 0,
+                        "crampon": 1,
+                        "axes": false
+                    }
+        
+                    holds = []
+                    start = Date.now()
+        
+                    sfxClear()
+                    sfx("click", 25)
+        
+                    document.querySelector(".holdzone").innerHTML = ""
+                    document.querySelector(".gameOver").style.display = "none"
+                    document.querySelector(".title").style.display = "none"
+                    break
+                
+                case "back to title":
+                    sfx("click", 25)
+
+                    document.querySelector(".title").style.display = "block"
+                    document.querySelector(".boards").style.display = "none"
+                    buildTitle()
+                    break
+                
+                case "toggle scores":
+                    sfx("click", 25)
+
+                    if (leaderboard == "x"){
+                        leaderboard = "z"
+                    } else {
+                        leaderboard = "x"
+                    }
+                    renderLB()
+                    break
+            }
+            buildDeath()
+            return
+        }
+
+        if ((key.ArrowUp && !held.ArrowUp || key.ArrowDown && !held.ArrowDown)){
+            held.ArrowUp = key.ArrowUp
+            held.ArrowDown = key.ArrowDown
+
+            if (held.ArrowUp && deathMenu.selection > 0){
+                sfx("click", 25)
+                deathMenu.selection--
+            } else if (held.ArrowDown && deathMenu.selection < deathMenu.options.length-1){
+                sfx("click", 25)
+                deathMenu.selection++
+            }
+
+            buildDeath()
         }
     } else {
         deathcam = 0
@@ -467,13 +925,14 @@ setInterval(function(){
 
         if (player.pos[1] < player.best - 288){
             player.dead = true
+            title.selection = 0
 
             let deathboard = 0
 
-            if (punishment == 0.1){deathboard = 14449}
-            if (punishment == 1)  {deathboard = 14452}
-            if (punishment == 10) {deathboard = 14451}
-            if (punishment == 100){deathboard = 14453}
+            if (settings.punishment == 0.1){deathboard = 14449}
+            if (settings.punishment == 1)  {deathboard = 14452}
+            if (settings.punishment == 10) {deathboard = 14451}
+            if (settings.punishment == 100){deathboard = 14453}
 
             if (!offline){NGIO.postScore(deathboard, Math.round(player.best/16)*100, function(){})}
 
@@ -564,121 +1023,9 @@ setInterval(function(){
             }
         }
 
-        if (holds.length == 0){
-            holdbiome = ["normal", "crack", "clutter", "classic", "inset"][Math.floor(Math.random()*4)]
-            holds.push([256, 96, false])
-
-            let newHold = document.createElement("div")
-            newHold.className = "hold" + holds[holds.length-1][1]
-            newHold.style.top = 512 - holds[holds.length-1][1] + "px"
-            newHold.style.left = holds[holds.length-1][0] + "px"
-            newHold.style.position = "absolute"
-            newHold.style.width = "16px"
-            newHold.style.height = "16px"
-
-            let ice = false
-            if (holdbiome == "normal"){
-                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "hold"][Math.floor(Math.random()*4)] + ".png)"
-            } else if (holdbiome == "crack"){
-                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"][Math.floor(Math.random()*4)] + ".png)"
-            } else if (holdbiome == "clutter"){
-                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "handjam", "hold", "pinch", "edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"][Math.floor(Math.random()*10)] + ".png)"
-            } else if (holdbiome == "classic"){
-                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "hold.png)"
-            } else if (holdbiome == "inset"){
-                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "handjam"][Math.floor(Math.random()*2)] + ".png)"
-            }
-
-            document.querySelector(".holdzone").appendChild(newHold)
-        }
-        while (holds[holds.length-1][1] < player.best + 512){
-            let holdx = holds[holds.length-1][0] + Math.round(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4)-(((holds[holds.length-1][1]/(2560/punishment))+4)/2))*16
-            let holdy = holds[holds.length-1][1] + (Math.ceil(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4))*16)
-            
-            if (Math.random() < 0.01){
-                holdbiome = ["normal", "crack", "clutter", "classic", "inset"][Math.floor(Math.random()*4)]
-            }
-
-            if (holdbiome == "crack" && holds.length >= 2){
-                holdx = holds[holds.length-1][0]
-                holdy = holds[holds.length-1][1] + 16
-
-                if (Math.random() < 0.1){
-                    holdx += Math.round(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4)-(((holds[holds.length-1][1]/(2560/punishment))+4)/2))*16
-                    holdy += Math.ceil(Math.random()*((holds[holds.length-1][1]/(2560/punishment))+4))*16
-                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp.png")`){
-                    holdx += 16
-                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp2.png")`){
-                    holdx += [-16, 0][Math.floor(Math.random()*2)]
-                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp3.png")`){
-                    holdx -= 16
-                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp4.png")`){
-                    holdx += [16, 0][Math.floor(Math.random()*2)]
-                } else {
-                    holdx += [-16, 0, 16][Math.floor(Math.random()*3)]
-                }
-            }
-
-            if (holdx < 128){
-                holdx = 128
-                holdx += Math.round(Math.random()*4)*16
-            }
-            
-            if (holdx > 384){
-                holdx = 384
-                holdx -= Math.round(Math.random()*4)*16
-            }
-
-            let ice = false
-
-            if (Math.random() < ((holdy)/(16000/punishment)) && holdy > 16000){
-                ice = true
-            }
-
-            let newHold = document.createElement("div")
-            newHold.className = "hold" + holdy
-            newHold.style.top = 512 - holdy + "px"
-            newHold.style.left = holdx + "px"
-            newHold.style.position = "absolute"
-            newHold.style.width = "16px"
-            newHold.style.height = "16px"
-
-            if (holdbiome == "normal"){
-                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "hold"][Math.floor(Math.random()*4)] + ".png)"
-            } else if (holdbiome == "crack"){
-                if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp.png")`){
-                    newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp4.png)"
-                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp2.png")`){
-                    if (holdx - holds[holds.length-1][0] == 0){
-                        newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp", "edgecrimp4"][Math.floor(Math.random()*2)] + ".png)"
-                    } else if (holdx - holds[holds.length-1][0] == -16){
-                        newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp3.png)"
-                    }
-                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp3.png")`){
-                    newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp2.png)"
-                } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp4.png")`){
-                    if (holdx - holds[holds.length-1][0] == 0){
-                        newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp2", "edgecrimp3"][Math.floor(Math.random()*2)] + ".png)"
-                    } else if (holdx - holds[holds.length-1][0] == 16){
-                        newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp.png)"
-                    }
-                } else {
-                    newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"][Math.floor(Math.random()*4)] + ".png)"
-                }
-            } else if (holdbiome == "clutter"){
-                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "handjam", "hold", "pinch", "edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"][Math.floor(Math.random()*10)] + ".png)"
-            } else if (holdbiome == "classic"){
-                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "hold.png)"
-            } else if (holdbiome == "inset"){
-                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "handjam"][Math.floor(Math.random()*2)] + ".png)"
-            }
-            holds.push([holdx, holdy, ice])
-
-            document.querySelector(".holdzone").appendChild(newHold)
-        }
+        generateHolds()
         
         while (holds[0][1] < player.best - 256){
-        //    document.querySelector(".hold" + holds[0][1]).remove()
             holds.splice(0, 1)
         }
 
@@ -738,24 +1085,10 @@ setInterval(function(){
             document.querySelector(".handR").style.backgroundImage = "url(img/handR.png)"
         }
 
-        renderUI()
-    }
+        document.querySelector(".time").innerHTML = renderTime(Date.now() - start)
+        document.querySelector(".height").innerHTML = renderString(Math.round(player.best/16) + "m")
+        document.querySelector(".holds").innerHTML = renderString(player.holds + " holds")
 
-    if (player.best > 256){
-        document.querySelector(".game").style.top = Math.round(player.best - 256) + "px"
-        document.querySelector(".towerRender").style.top = (Math.round((player.best - 256)%512)-512) + "px"
-        for (let x = 0; x < 14; x++){
-            document.querySelector(".paralax"+x).style.bottom = Math.round(-32-((player.best-256)/((x+2)**2))) + "px"
-        }
-    } else {
-        document.querySelector(".game").style.top = "0px"
-        document.querySelector(".towerRender").style.top = "0px"
-        for (let x = 0; x < 14; x++){
-            document.querySelector(".paralax"+x).style.bottom = "-32px"
-        }
-    }
-
-    if (!document.hasFocus() && !mobile) {
-        document.querySelector(".focus").style.display = 'block'
+        scroll()
     }
 }, 1000/60)

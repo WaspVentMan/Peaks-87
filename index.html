@@ -5,11 +5,18 @@
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <title>PEAKS '87</title>
     <script src="https://cdn.jsdelivr.net/gh/PsychoGoldfishNG/NewgroundsIO-JS@8c72515/dist/NewgroundsIO.min.js"></script>
+    <script src="lib/text.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="img/handL.png" type="image/x-icon">
 </head>
 <body style="background-color: black;">
-    <div class="gameWindow" style="width: 512px; height: 512px; position: absolute; top: calc(50% - 256px); left: calc(50% - 256px); overflow: hidden; background-color: rgb(135, 206, 235);">
+    <div class="background" style="background-image: url(img/background/1p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat;"></div>
+    <div class="background bg360p" style="display: none; background-image: url(img/background/360p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
+    <div class="background bg480p" style="display: none; background-image: url(img/background/480p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
+    <div class="background bg720p" style="display: none; background-image: url(img/background/720p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
+    <div class="background bg1080p" style="display: none; background-image: url(img/background/1080p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
+    <div class="background bg4k" style="display: none; background-image: url(img/background/4k.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
+    <div class="gameWindow" style="filter: grayscale(100%); width: 512px; height: 512px; position: absolute; top: calc(50% - 256px); left: calc(50% - 256px); overflow: hidden; background-color: rgb(135, 206, 235);">
         <div class="stars" style="width: 512px; height: 512px; position: absolute; background-image: url(img/stars.png); opacity: 0%;"></div>
         <div class="game" style="width: 512px; height: 512px; position: absolute; z-index: 1000; overflow: visible;">
             <div class="holdzone" style=" overflow: visible;"></div>
@@ -21,21 +28,21 @@
                 <div class="handR" style="width: 16px; height: 16px; background-image: url(img/handR.png); position: absolute;"></div>
             </div>
         </div>
-        <div class="towerRender" style="width: 512px; height: 1028px; position: absolute; background-image: url(img/cliff.png); z-index: 100;"></div>
-        <div class="paralax0" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 99;"></div>
-        <div class="paralax1" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree1.png); z-index: 98;"></div>
-        <div class="paralax2" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 97;"></div>
-        <div class="paralax3" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree1.png); z-index: 96;"></div>
-        <div class="paralax4" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 95;"></div>
-        <div class="paralax5" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree1.png); z-index: 94;"></div>
-        <div class="paralax6" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 93;"></div>
-        <div class="paralax7" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree1.png); z-index: 92;"></div>
-        <div class="paralax8" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 91;"></div>
-        <div class="paralax9" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree1.png); z-index: 90;"></div>
-        <div class="paralax10" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree0.png); z-index: 89;"></div>
-        <div class="paralax11" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraHill0.png); z-index: 88;"></div>
-        <div class="paralax12" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraHill1.png); z-index: 87;"></div>
-        <div class="paralax13" style="width: 512px; height: 224px; position: absolute; bottom: -32px; background-image: url(img/deco/paraMount0.png); z-index: 86;"></div>
+        <div class="towerRender" style="width: 512px; height: 2048px; position: absolute; background-image: url(img/cliff.png); z-index: 100;"></div>
+        <div class="paralax0" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 99;"></div>
+        <div class="paralax1" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 98; background-position: 16px 0px;"></div>
+        <div class="paralax2" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 97;"></div>
+        <div class="paralax3" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 96; background-position: 16px 0px;"></div>
+        <div class="paralax4" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 95;"></div>
+        <div class="paralax5" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 94; background-position: 16px 0px;"></div>
+        <div class="paralax6" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 93;"></div>
+        <div class="paralax7" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 92; background-position: 16px 0px;"></div>
+        <div class="paralax8" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 91;"></div>
+        <div class="paralax9" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 90; background-position: 16px 0px;"></div>
+        <div class="paralax10" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraTree.png); z-index: 89;"></div>
+        <div class="paralax11" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraHill.png); z-index: 88;"></div>
+        <div class="paralax12" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraHill.png); z-index: 87; transform: scaleX(-1);"></div>
+        <div class="paralax13" style="width: 512px; height: 224px; position: absolute; bottom: -32px; background-image: url(img/deco/paraMount.png); z-index: 86;"></div>
         <div class="time" style="position: absolute; z-index: 10000; top: 16px; left: 128px; display: flex;"></div>
         <div class="height" style="position: absolute; z-index: 10000; top: 32px; left: 128px; display: flex;"></div>
         <div class="gamepad" style="position: absolute; z-index: 10000; top: 32px; right: 128px; display: none;">
@@ -60,41 +67,21 @@
         <div class="holds" style="position: absolute; z-index: 10000; top: 48px; left: 128px; display: flex;"></div>
         <div class="con" style="position: absolute; z-index: 10000; bottom: 16px; left: 128px; display: none;"></div>
         <div class="ver" style="position: absolute; z-index: 10000; top: 16px; right: 128px; display: flex;"></div>
+        <div style="position: absolute; z-index: 10000; top: 32px; right: 128px; text-align: right; width: max-content;">
+            <div class="debugG" style="width: 100%;"></div>
+            <div class="debugP" style="width: 100%;"></div>
+        </div>
         <div class="gameOver" style="position: absolute; z-index: 10000; top: 64px; left: 224px; display: none; width: 64px; height: 64px; background-image: url(img/gameover.png);"></div>
-        <div class="boards" style="position: absolute; z-index: 10000; top: 64px; left: 128px; width: 256px; height: 384px; display: none;"></div>
+        <div class="boards" style="position: absolute; z-index: 10000; top: 64px; left: 128px; width: 256px; display: none;">
+            <div class="boardText" style="width: 100%;"></div>
+            <div class="boardMenu" style="width: 100%; margin-top: 16px;">test</div>
+        </div>
         <div class="credits" style="position: absolute; z-index: 100001; width: 512px; height: 512px; display: none;"><div class="creditsText"></div></div>
         <div class="title" style="position: absolute; z-index: 100000; width: 512px; height: 512px;">
-            <div style="background-image: url(img/logo.png); width: 256px; height: 64px; position: absolute; left: 128px; top: 128px;"></div>
-            <div class="select" style="width: 256px; height: 256px; position: absolute; top: 256px; left: 128px;">
-                <div style="width: max-content; margin: auto; height: 16px; display: flex; text-align: center">
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/z.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/t.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/s.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/t.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/a.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/r.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/t.png);"></div>
-                </div>
-                <div style="width: max-content; margin: auto; height: 16px; display: flex; text-align: center">
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/x.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/f.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/r.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/c.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/r.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/e.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/d.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/i.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/t.png);"></div>
-                    <div style="width: 8px; height: 16px; background-image: url(img/letter/s.png);"></div>
-                </div>
-            </div>
+            <div style="background-image: url(img/logo.png); width: 256px; height: 128px; position: absolute; left: 128px; top: 128px;"></div>
+            <div class="select" style="width: 256px; height: 256px; position: absolute; top: 256px; left: 128px;"></div>
         </div>
+        <div class="settings" style="position: absolute; z-index: 100000; width: 512px; height: 512px; display: none;"></div>
         <div class="touchButt" style="position: absolute; z-index: 200000; width: 512px; height: 512px; display: none;">
             <div class="touchButtA" style="width: 64px; height: 64px; position: absolute; left: 96px; bottom: 0px; background-image: url(img/touchButtA.png); border-radius: 32px;"></div>
             <div class="touchButtB" style="width: 64px; height: 64px; position: absolute; left: 160px; bottom: 0px; background-image: url(img/touchButtB.png); border-radius: 32px;"></div>
@@ -103,7 +90,7 @@
             <div class="touchButtU" style="width: 64px; height: 64px; position: absolute; right: 160px; bottom: 64px; background-image: url(img/touchButtU.png); border-radius: 32px;"></div>
             <div class="touchButtD" style="width: 64px; height: 64px; position: absolute; right: 96px; bottom: 64px; background-image: url(img/touchButtD.png); border-radius: 32px;"></div>
         </div>
-        <div class="focus" style="position: absolute; z-index: 10000000; width: 512px; height: 512px; background-color: #000000dd; user-select: all;" onclick="this.style.display = 'none'; wind.play()">
+        <div class="focus" style="position: absolute; z-index: 10000000; width: 512px; height: 512px; background-color: #000000dd; user-select: all; display: block;" onclick="this.style.display = 'none'; wind.play()">
             <div style="width: max-content; margin: auto; height: 16px; margin-top: 240px; display: flex; text-align: center">
                 <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
                 <div style="width: 8px; height: 16px; background-image: url(img/letter/u.png);"></div>
@@ -138,31 +125,13 @@
     </div>
 
     <div class="loadZoneDeluxe" style="position: absolute; width: 512px; height: 512px; top: calc(50% - 256px); left: calc(50% - 256px); z-index: 1000000; background-color: black;">
-        <div style="display: flex; width: max-content; margin: auto;">
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/l.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/a.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/d.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/i.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/n.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/g.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/,.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/,.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/,.png);"></div>
-        </div>
-        <div class="assetCount" style="display: flex; width: max-content; margin: auto;"></div>
+        <div class="assetCount" style="width: max-content; margin: auto; margin-top: 240px;"></div>
     </div>
     <script>
-        let toload = 106
+        let toload = 60
         let loaded = 0
         let loadLoop = setInterval(function(){
-            heightText = ""
-
-            for (let x = 0; x < (loaded + "_of_" + toload).length; x++){
-                heightText += `<div style="width: 8px; height: 16px; background-image: url(img/letter/${(loaded + "_of_" + toload)[x]}.png);"></div>`
-            }
-
-            document.querySelector(".assetCount").innerHTML = heightText.toLocaleLowerCase()
+            document.querySelector(".assetCount").innerHTML = renderStrings(["Loading...", loaded + " of " + toload])
 
             if (loaded >= toload - (25*mobile)){
                 setTimeout(function(){
@@ -199,50 +168,6 @@
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/highwind.mp3"></audio>
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/87.mp3"></audio>
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/click.mp3"></audio>
-        <img onload="loaded++" src="img/letter/&.png">
-        <img onload="loaded++" src="img/letter/^.png">
-        <img onload="loaded++" src="img/letter/,.png">
-        <img onload="loaded++" src="img/letter/_.png">
-        <img onload="loaded++" src="img/letter/-.png">
-        <img onload="loaded++" src="img/letter/+.png">
-        <img onload="loaded++" src="img/letter/0.png">
-        <img onload="loaded++" src="img/letter/1.png">
-        <img onload="loaded++" src="img/letter/2.png">
-        <img onload="loaded++" src="img/letter/3.png">
-        <img onload="loaded++" src="img/letter/4.png">
-        <img onload="loaded++" src="img/letter/5.png">
-        <img onload="loaded++" src="img/letter/6.png">
-        <img onload="loaded++" src="img/letter/7.png">
-        <img onload="loaded++" src="img/letter/8.png">
-        <img onload="loaded++" src="img/letter/9.png">
-        <img onload="loaded++" src="img/letter/a.png">
-        <img onload="loaded++" src="img/letter/b.png">
-        <img onload="loaded++" src="img/letter/c.png">
-        <img onload="loaded++" src="img/letter/d.png">
-        <img onload="loaded++" src="img/letter/e.png">
-        <img onload="loaded++" src="img/letter/f.png">
-        <img onload="loaded++" src="img/letter/g.png">
-        <img onload="loaded++" src="img/letter/h.png">
-        <img onload="loaded++" src="img/letter/i.png">
-        <img onload="loaded++" src="img/letter/í.png">
-        <img onload="loaded++" src="img/letter/j.png">
-        <img onload="loaded++" src="img/letter/k.png">
-        <img onload="loaded++" src="img/letter/l.png">
-        <img onload="loaded++" src="img/letter/m.png">
-        <img onload="loaded++" src="img/letter/n.png">
-        <img onload="loaded++" src="img/letter/o.png">
-        <img onload="loaded++" src="img/letter/ó.png">
-        <img onload="loaded++" src="img/letter/p.png">
-        <img onload="loaded++" src="img/letter/q.png">
-        <img onload="loaded++" src="img/letter/r.png">
-        <img onload="loaded++" src="img/letter/s.png">
-        <img onload="loaded++" src="img/letter/t.png">
-        <img onload="loaded++" src="img/letter/u.png">
-        <img onload="loaded++" src="img/letter/v.png">
-        <img onload="loaded++" src="img/letter/w.png">
-        <img onload="loaded++" src="img/letter/x.png">
-        <img onload="loaded++" src="img/letter/y.png">
-        <img onload="loaded++" src="img/letter/z.png">
         <img onload="loaded++" src="img/holds/bigpocket.png">
         <img onload="loaded++" src="img/holds/dangeregg.png">
         <img onload="loaded++" src="img/holds/edgecrimp.png">
@@ -275,17 +200,20 @@
         <img onload="loaded++" src="img/peakManAxeless.png">
         <img onload="loaded++" src="img/logo.png">
         <img onload="loaded++" src="img/stars.png">
-        <img onload="loaded++" src="img/deco/paraTree0.png">
-        <img onload="loaded++" src="img/deco/paraTree1.png">
-        <img onload="loaded++" src="img/deco/paraHill0.png">
-        <img onload="loaded++" src="img/deco/paraHill1.png">
-        <img onload="loaded++" src="img/deco/paraMount0.png">
+        <img onload="loaded++" src="img/deco/paraTree.png">
+        <img onload="loaded++" src="img/deco/paraHill.png">
+        <img onload="loaded++" src="img/deco/paraMount.png">
+        <img onload="document.querySelector('.bg360p').style.display = 'block'" src="img/background/360p.png">
+        <img onload="document.querySelector('.bg480p').style.display = 'block'" src="img/background/480p.png">
+        <img onload="document.querySelector('.bg720p').style.display = 'block'" src="img/background/720p.png">
+        <img onload="document.querySelector('.bg1080p').style.display = 'block'" src="img/background/1080p.png">
+        <img onload="document.querySelector('.bg4k').style.display = 'block'" src="img/background/4k.png">
     </div>
 
     <script src="lib/audio.js"></script>
     <script src="lib/KBnM.js"></script>
-    <script src="lib/text.js"></script>
     <script src="lib/leaderboard.js"></script>
+    <script src="lib/menu.js"></script>
     <script src="nginit.js"></script>
     <script src="script.js"></script>
     <script src="lib/credits.js"></script>

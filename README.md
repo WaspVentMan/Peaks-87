@@ -1,4 +1,4 @@
-![Peaks '87 Logo](https://github.com/WaspVentMan/Peaks-87/blob/main/img/NGlogoV3.png?raw=true)
+![Peaks '87 Logo](https://github.com/WaspVentMan/Peaks-87/blob/main/img/NGlogoV5.png?raw=true)
 # Peaks '87: Climb an endless mountain in the Great Gales
 
 # Index
@@ -19,9 +19,7 @@
 
 ## Compatable Characters
 All chars are automatically converted to lower case.
-Compatable chars: `a-z, 0-9, -, í, ó, plus those displayed below`
-
-Char subs: `_ for space` `+ for '` `, for .` `^ for <` `% for >` `£ for :`
+Compatable chars: ` 0123456789abcdefghijklmnopqrstuvwxyz.,!?'-+$"~&/#%():[]|{}<>`
 
 ## renderChar(char)
 Renders a character into a HTML String.
@@ -39,20 +37,20 @@ HTMLObject.innerHTML = renderChar("L")
 
 outputs:
 
-![l](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/l.png?raw=true)
+![l](./img/docs/renderChar.png?raw=true)
 
 > [!NOTE]
-> Using a character that is not in the list of [Compatable chars](#compatable-characters) and applying the result to a HTML element's `.innerHTML` will cause the console to throw 404 errors and missing letters to occur.
+> Using a character that is not in the list of [Compatable chars](#compatable-characters) and applying the result to a HTML element's `.innerHTML` will cause a random "glitch" character to generate.
 >
 > i.e.
 >
 > ```
-> HTMLObject.innerHTML = renderChar("!")
+> HTMLObject.innerHTML = renderChar("_")
 > ```
 >
 > output:
 >
-> nothing
+> ![_](./img/docs/renderCharError.png?raw=true)
 
 ## renderString(string)
 Renders a string into a HTML String.
@@ -65,12 +63,12 @@ Renders a string into a HTML String.
 i.e.
 
 ```
-HTMLObject.innerHTML = renderString("words_and_stuff")
+HTMLObject.innerHTML = renderString("words & stuff")
 ```
 
 outputs:
 
-![w](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/w.png?raw=true)![o](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/o.png?raw=true)![r](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/r.png?raw=true)![d](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/d.png?raw=true)![s](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/s.png?raw=true)![_](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/_.png?raw=true)![a](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/a.png?raw=true)![n](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/n.png?raw=true)![d](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/d.png?raw=true)![_](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/_.png?raw=true)![s](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/s.png?raw=true)![t](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/t.png?raw=true)![u](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/u.png?raw=true)![f](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/f.png?raw=true)![f](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/f.png?raw=true)
+![words & stuff](./img/docs/renderString.png?raw=true)
 
 > [!NOTE]
 > Using a character that is not in the list of [Compatable chars](#compatable-characters) and applying the result to a HTML element's `.innerHTML` will cause the console to throw 404 errors and missing letters to occur.
@@ -78,12 +76,12 @@ outputs:
 > i.e.
 >
 > ```
-> HTMLObject.innerHTML = renderString("epic!")
+> HTMLObject.innerHTML = renderString("words_&_stuff")
 > ```
 >
 > output:
 >
-> ![e](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/e.png?raw=true)![p](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/p.png?raw=true)![i](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/i.png?raw=true)![c](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/c.png?raw=true)
+> ![words_&_stuff](./img/docs/renderStringError.png?raw=true)
 
 ## renderStrings(strings)
 Renders a list of strings as a HTML String.
@@ -101,8 +99,7 @@ HTMLObject.innerHTML = renderStrings(["string", "string"])
 
 outputs:
 
-![s](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/s.png?raw=true)![t](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/t.png?raw=true)![r](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/r.png?raw=true)![i](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/i.png?raw=true)![n](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/n.png?raw=true)![g](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/g.png?raw=true)<br>
-![s](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/s.png?raw=true)![t](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/t.png?raw=true)![r](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/r.png?raw=true)![i](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/i.png?raw=true)![n](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/n.png?raw=true)![g](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/g.png?raw=true)
+![string string](./img/docs/renderStrings.png?raw=true)
 
 > [!NOTE]
 > Using a character that is not in the list of [Compatable chars](#compatable-characters) and applying the result to a HTML element's `.innerHTML` will cause the console to throw 404 errors and missing letters to occur.
@@ -110,13 +107,12 @@ outputs:
 > i.e.
 >
 > ```
-> HTMLObject.innerHTML = renderStrings(["super", "!hot!"])
+> HTMLObject.innerHTML = renderStrings(["super", "_hot_"])
 > ```
 >
 > output:
 >
-> ![s](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/s.png?raw=true)![u](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/u.png?raw=true)![p](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/p.png?raw=true)![e](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/e.png?raw=true)![r](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/r.png?raw=true)<br>
->![_](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/_.png?raw=true)![h](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/h.png?raw=true)![o](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/o.png?raw=true)![t](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/t.png?raw=true)
+> ![super _hot_](./img/docs/renderStringsError.png?raw=true)
 
 ## renderDots(count)
 Function used for filling the middle secions of the leaderboard, there could probably be another use for this, but I don't know it.
@@ -155,4 +151,4 @@ HTMLObject.innerHTML = renderTime(69420)
 
 outputs:
 
-![0](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/0.png?raw=true)![:](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/£.png?raw=true)![0](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/0.png?raw=true)![1](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/1.png?raw=true)![:](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/£.png?raw=true)![0](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/0.png?raw=true)![9](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/9.png?raw=true)![.](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/,.png?raw=true)![4](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/4.png?raw=true)![2](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/2.png?raw=true)![0](https://github.com/WaspVentMan/Peaks-87/blob/main/img/letter/0.png?raw=true)
+![0:01:09.420](./img/docs/renderTime.png?raw=true)
