@@ -2,7 +2,7 @@ let offline = true
 
 // Set up the options for NGIO.
 var options = {
-    version: "2.0.0",
+    version: "2.1.0",
     preloadScoreBoards: true,
     preloadMedals: true,
     preloadSaveSlots: true
@@ -20,9 +20,9 @@ let ngLoop = setInterval(function(){
             case NGIO.STATUS_LOCAL_VERSION_CHECKED:
 
                 if (NGIO.isDeprecated) {
-                    document.querySelector(".ver").innerHTML = renderString("v" + options.version + " old")
+                    document.querySelector(".ver").innerHTML = renderString("v" + options.version + " old", "default", "right")
                 } else {
-                    document.querySelector(".ver").innerHTML = renderString("v" + options.version)
+                    document.querySelector(".ver").innerHTML = renderString("v" + options.version, "default", "right")
                 }
 
                 if (!NGIO.legalHost) {
@@ -41,6 +41,11 @@ let ngLoop = setInterval(function(){
             case NGIO.STATUS_READY:
                 offline = false
                 buildSettings()
+
+                NGIO.getScores(14449, {"period": NGIO.PERIOD_ALL_TIME}, function(onlinescores, board, options){scores["p0Cache"] = onlinescores})
+                NGIO.getScores(14452, {"period": NGIO.PERIOD_ALL_TIME}, function(onlinescores, board, options){scores["p1Cache"] = onlinescores})
+                NGIO.getScores(14451, {"period": NGIO.PERIOD_ALL_TIME}, function(onlinescores, board, options){scores["p10Cache"] = onlinescores})
+                NGIO.getScores(14453, {"period": NGIO.PERIOD_ALL_TIME}, function(onlinescores, board, options){scores["p100Cache"] = onlinescores})
                 break
         }
 

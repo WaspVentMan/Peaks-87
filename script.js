@@ -4,6 +4,8 @@ let player = {
     "rot": 0,
     "gripper": 0,
     "anchor": null,
+    "hold": {},
+    "stamina": 100,
     "best": 0,
     "dead": true,
     "holds": 0,
@@ -12,79 +14,247 @@ let player = {
     "axes": false
 }
 
-let scores = [
-    ["SLM", 7464],
-    ["BUL", 2288],
-    ["MHO", 2017],
-    ["ELD", 1476],
-    ["VIS", 1370],
-    ["YMR", 543],
-    ["WLK", 536],
-    ["DND", 495],
-    ["MHR", 396],
-    ["EIN", 394]
+let scores = {
+    "p0": [
+        ["SLM", 7464],
+        ["BUL", 2288],
+        ["MHO", 2017],
+        ["ELD", 1476],
+        ["VIS", 1370],
+        ["YMR", 543],
+        ["WLK", 536],
+        ["DND", 495],
+        ["MHR", 396],
+        ["EIN", 394]
+    ],
+    "p1": [
+        ["SLM", 7464],
+        ["BUL", 2288],
+        ["MHO", 2017],
+        ["ELD", 1476],
+        ["VIS", 1370],
+        ["YMR", 543],
+        ["WLK", 536],
+        ["DND", 495],
+        ["MHR", 396],
+        ["EIN", 394]
+    ],
+    "p10": [
+        ["SLM", 7464],
+        ["BUL", 2288],
+        ["MHO", 2017],
+        ["ELD", 1476],
+        ["VIS", 1370],
+        ["YMR", 543],
+        ["WLK", 536],
+        ["DND", 495],
+        ["MHR", 396],
+        ["EIN", 394]
+    ],
+    "p100": [
+        ["SLM", 7464],
+        ["BUL", 2288],
+        ["MHO", 2017],
+        ["ELD", 1476],
+        ["VIS", 1370],
+        ["YMR", 543],
+        ["WLK", 536],
+        ["DND", 495],
+        ["MHR", 396],
+        ["EIN", 394]
+    ],
+    "p0Cache": undefined,
+    "p1Cache": undefined,
+    "p10Cache": undefined,
+    "p100Cache": undefined
+}
+
+let skins = [
+    ["peakMan", "peak man"],
+    ["peakManGL", "good luck"],
+    ["bald", "bald peak man"],
+    ["peakManHD", "peak man hd"],
+    ["peakManGB", "peak man gameboy"],
+    ["peakManGBBW", "peak man gameboy (monochrome)"],
+    ["rolereverse", "ice axes"],
+    ["mountain", "forevisir"],
+    ["victim", "the victim"],
 ]
+
+let skinPacks = []
+let savePack = localStorage.getItem("PEAKS87SKINPACKS")
+if (savePack != null){
+    skinPacks = JSON.parse(savePack)
+}
 
 let settings = {
     "menu": {
-        "selection": 0,
+        "selection": [0, 0],
         "lockin": false,
         "options": [
-            {
-                "name": "save and return to menu",
-                "value": undefined,
-                "var": "menu"
-            },
-            {
-                "name": "newgrounds",
-                "value": "log in",
-                "var": "ng",
-                "title": true
-            },
-            {
-                "name": "screen zoom",
-                "value": "$x zoom",
-                "var": "zoom"
-            },
-            {
-                "name": "grayscale",
-                "value": "$",
-                "var": "grayscale",
-                "handler": "bool"
-            },
-            {
-                "name": "punishment level",
-                "value": "PUNISHMENT LV.$",
-                "var": "punishment"
-            },
-            {
-                "name": "debug menu options",
-                "value": "titles: $",
-                "var": "debugtitles",
-                "handler": "bool",
-                "title": true
-            },
-            {
-                "name": "generation debug",
-                "value": "generation: $",
-                "var": "debuggen",
-                "handler": "bool",
-                "small": true
-            },
-            {
-                "name": "ice debug",
-                "value": "ice: $",
-                "var": "debugice",
-                "handler": "bool",
-                "small": true
-            },
-            {
-                "name": "game debug",
-                "value": "game: $",
-                "var": "debugpef",
-                "handler": "bool",
-                "small": true
-            }
+            [
+                {
+                    "name": "settings",
+                    "value": "save and return to menu",
+                    "var": "menu",
+                    "small": true
+                },
+                {
+                    "name": "newgrounds",
+                    "value": "log in",
+                    "var": "ng",
+                    "title": true
+                },
+                {
+                    "name": "screen zoom",
+                    "value": "$x zoom",
+                    "var": "zoom"
+                },
+                {
+                    "name": "grayscale",
+                    "value": "$",
+                    "var": "grayscale",
+                    "handler": "bool"
+                },
+                {
+                    "name": "punishment level",
+                    "value": "PUNISHMENT LV.$",
+                    "var": "punishment"
+                }
+            ],
+            [
+                {
+                    "name": "settings",
+                    "value": "save and return to menu",
+                    "var": "menu",
+                    "small": true
+                },
+                {
+                    "name": "more skins",
+                    "value": "on discord",
+                    "var": "discord link",
+                },
+                {
+                    "name": "",
+                    "value": "change skin",
+                    "var": "cycle skin",
+                    "title": true
+                },
+                {
+                    "name": "",
+                    "value": "import skin",
+                    "var": "change skin",
+                    "small": true
+                },
+                {
+                    "name": "",
+                    "value": "import skin pack",
+                    "var": "load spack",
+                    "small": true
+                },
+                {
+                    "name": "reset skin",
+                    "value": "reset skin",
+                    "var": "reset skin",
+                    "small": true
+                },
+                {
+                    "name": "skin sheet",
+                    "value": "$",
+                    "var": "skin",
+                    "select": false
+                },
+                {
+                    "name": "skin sheet",
+                    "value": "£",
+                    "var": "idk lmao",
+                    "small": true
+                },
+                {
+                    "name": "if this is blank",
+                    "value": "the url is invalid",
+                    "var": "idk lmao",
+                    "select": false
+                }
+            ],
+            [
+                {
+                    "name": "settings",
+                    "value": "save and return to menu",
+                    "var": "menu",
+                    "small": true
+                },
+                {
+                    "name": "reset scores",
+                    "value": "this will clear all local scores",
+                    "handler": "bool",
+                    "var": "reset scores",
+                    "on": "!!! resetting scores !!!"
+                },
+                {
+                    "name": "reset skins",
+                    "value": "this will clear all saved skin packs",
+                    "handler": "bool",
+                    "var": "reset",
+                    "on": "!!! resetting skins !!!"
+                },
+                {
+                    "name": "reset settings",
+                    "value": "this will reset settings",
+                    "handler": "bool",
+                    "var": "reset settings",
+                    "on": "!!! resetting settings !!!"
+                },
+                {
+                    "name": "hard reset",
+                    "value": "this will reset everything",
+                    "handler": "bool",
+                    "var": "hard reset",
+                    "on": "!!! resetting everything !!!"
+                }
+            ],
+            [
+                {
+                    "name": "settings",
+                    "value": "save and return to menu",
+                    "var": "menu",
+                    "small": true
+                },
+                {
+                    "name": "",
+                    "value": "titles: $",
+                    "var": "debugtitles",
+                    "handler": "bool",
+                    "title": true
+                },
+                {
+                    "name": "generation debug",
+                    "value": "generation: $",
+                    "var": "debuggen",
+                    "handler": "bool",
+                    "small": true
+                },
+                {
+                    "name": "ice debug",
+                    "value": "ice: $",
+                    "var": "debugice",
+                    "handler": "bool",
+                    "small": true
+                },
+                {
+                    "name": "game debug",
+                    "value": "game: $",
+                    "var": "debugpef",
+                    "handler": "bool",
+                    "small": true
+                }
+            ]
+        ],
+        "titles": [
+            "general",
+            "skin",
+            "data management",
+            "debug menu"
         ]
     },
     "zoom": 1,
@@ -93,7 +263,12 @@ let settings = {
     "debugtitles": true,
     "debuggen": false,
     "debugpef": false,
-    "debugice": false
+    "debugice": false,
+    "reset scores": false,
+    "reset skins": false,
+    "reset settings": false,
+    "hard reset": false,
+    "skin": ["L", 0]
 }
 
 let title = {
@@ -135,22 +310,28 @@ let subtitles = {
 
 let saveData = localStorage.getItem("PEAKS87")
 if (saveData != null){
-    scores = JSON.parse(saveData)
+    if (JSON.parse(saveData)["p0"] == undefined){
+        console.log("Existing Old Format Data")
+        console.log(saveData)
+        scores["p" + Math.floor(settings.punishment)] = JSON.parse(saveData)
+    } else {
+        scores = JSON.parse(saveData)
+    }
     
-    for (let x = 0; x < scores.length; x++){
-        if (scores[x][0] == "MHó"){
-            scores[x][0] = "MHO"
+    for (let x = 0; x < scores["p" + Math.floor(settings.punishment)].length; x++){
+        if (scores["p" + Math.floor(settings.punishment)][x][0] == "MHó"){
+            scores["p" + Math.floor(settings.punishment)][x][0] = "MHO"
         }
 
-        if (scores[x][0] == "VíS"){
-            scores[x][0] = "VIS"
+        if (scores["p" + Math.floor(settings.punishment)][x][0] == "VíS"){
+            scores["p" + Math.floor(settings.punishment)][x][0] = "VIS"
         }
     }
 }
 
-for (let x = 0; x < scores.length; x++){
-    if (scores[x][0] == "YOU"){
-        player.best = scores[x][1]*16
+for (let x = 0; x < scores["p" + Math.floor(settings.punishment)].length; x++){
+    if (scores["p" + Math.floor(settings.punishment)][x][0] == "YOU"){
+        player.best = scores["p" + Math.floor(settings.punishment)][x][1]*16
         break
     }
 }
@@ -165,9 +346,13 @@ if (saveSett != null){
     }
 }
 
-let wind = new Audio(sounddict.wind)
+let wind = new Audio("audio/highwind.mp3")
 wind.loop = true
 wind.volume = 0
+
+let forest = new Audio("audio/forestambience.mp3")
+forest.loop = true
+forest.volume = 0
 
 let best = false
 let leaderboard = "z"
@@ -180,6 +365,7 @@ let start = 0
 let lastcramp = 0
 let lastaxe = 0
 let holdbiome = "normal"
+let particles = []
 
 function gametime(){
     let time = new Date()
@@ -316,6 +502,12 @@ function scroll(){
                 wind.volume = player.best/16000
             }
 
+            if (player.best/1600 > 1){
+                forest.volume = 0
+            } else {
+                forest.volume = 1-(player.best/1600)
+            }
+
             document.querySelector(".player").style.left = "-10000px"
         }
         
@@ -357,15 +549,30 @@ function generateHolds(force=false){
             holdx = holds[holds.length-1][0] + Math.round(Math.random()*((holds[holds.length-1][1]/(2560/settings.punishment))+4)-(((holds[holds.length-1][1]/(2560/settings.punishment))+4)/2))*16
             holdy = holds[holds.length-1][1] + (Math.ceil(Math.random()*((holds[holds.length-1][1]/(2560/settings.punishment))+4))*16)
             if (Math.random() < settings.punishment/10){
-                holdbiome = ["normal", "crack", "clutter", "classic", "inset"][Math.floor(Math.random()*4)]
+                holdbiome = ["normal", "oldnormal", "crack", "oldcrack", "clutter", "classic", "inset", "slipnslide", "paindrain", "slipndrain"][Math.floor(Math.random()*10)]
             }
         }
 
-        if (holdbiome == "crack" && holds.length >= 2){
+        if (holdbiome == "crack" && holds.length != 0){
+            if (!document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage.endsWith("E.png\")")){
+                holdx = holds[holds.length-1][0]
+                holdy = holds[holds.length-1][1] + 16
+            }
+
+                   if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage.endsWith("L.png\")")){
+                holdx -= 16
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage.endsWith("C.png\")")){
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage.endsWith("R.png\")")){
+                holdx += 16
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage.endsWith("E.png\")")){
+            } else {
+                holdx += [-16, 0, 16][Math.floor(Math.random()*3)]
+            }
+        } else if (holdbiome == "oldcrack" && holds.length != 0){
             holdx = holds[holds.length-1][0]
             holdy = holds[holds.length-1][1] + 16
 
-            if (Math.random() < 0.1){
+            if (Math.random() < 0.05){
                 holdx += Math.round(Math.random()*((holds[holds.length-1][1]/(2560/settings.punishment))+4)-(((holds[holds.length-1][1]/(2560/settings.punishment))+4)/2))*16
                 holdy += Math.ceil(Math.random()*((holds[holds.length-1][1]/(2560/settings.punishment))+4))*16
             } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp.png")`){
@@ -391,12 +598,6 @@ function generateHolds(force=false){
             holdx -= Math.round(Math.random()*4)*16
         }
 
-        if (settings.debuggen){
-            genDebug.push("biome: " + holdbiome)
-            genDebug.push("x: " + holdx)
-            genDebug.push("y: " + holdy)
-        }
-
         if (Math.random() < ((holdy)/(16000/settings.punishment)) && holdy > 16000){
             ice = true
         }
@@ -404,12 +605,6 @@ function generateHolds(force=false){
         if (settings.debugtitles && settings.debugice){
             genDebug.push("")
             genDebug.push("- ice info -")
-        }
-
-        if (settings.debugice){
-            genDebug.push("ice: " + ice)
-            genDebug.push("spawnable: " + (holdy>16000))
-            genDebug.push("chance: " + Math.round(((holdy)/(16000/settings.punishment))*10000)/100 + "%")
         }
 
         let newHold = document.createElement("div")
@@ -421,8 +616,20 @@ function generateHolds(force=false){
         newHold.style.height = "16px"
 
         if (holdbiome == "normal"){
+            newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["dangeregg", "hold", "edgecrimp", "edgecrimp3"][Math.floor(Math.random()*4)] + ".png)"
+        } else if (holdbiome == "oldnormal"){
             newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "fingercrimp", "hold"][Math.floor(Math.random()*4)] + ".png)"
-        } else if (holdbiome == "crack"){
+        } else if (holdbiome == "crack" && holds.length != 0){
+                   if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage.endsWith("L.png\")")){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "crackR" + "LCRE"[Math.floor(Math.random()*4)] + ".png)"
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage.endsWith("C.png\")")){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "crackC" + "LCRE"[Math.floor(Math.random()*4)] + ".png)"
+            } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage.endsWith("R.png\")")){
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "crackL" + "LCRE"[Math.floor(Math.random()*4)] + ".png)"
+            } else {
+                newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "crackE" + "LCR"[Math.floor(Math.random()*3)] + ".png)"
+            }
+        } else if (holdbiome == "oldcrack" && holds.length != 0){
             if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp.png")`){
                 newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "edgecrimp4.png)"
             } else if (document.querySelector(".hold" + holds[holds.length-1][1]).style.backgroundImage == `url("img/holds/edgecrimp2.png")`){
@@ -448,11 +655,114 @@ function generateHolds(force=false){
             newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + "hold.png)"
         } else if (holdbiome == "inset"){
             newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "handjam"][Math.floor(Math.random()*2)] + ".png)"
+        } else if (holdbiome == "slipnslide"){
+            newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "edgecrimp2", "edgecrimp4"][Math.floor(Math.random()*4)] + ".png)"
+        } else if (holdbiome == "paindrain"){
+            newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "pinch", "handjam", "fingercrimp"][Math.floor(Math.random()*4)] + ".png)"
+        } else if (holdbiome == "slipndrain"){
+            newHold.style.backgroundImage = "url(img/holds/" + ["", "ice"][ice+0] + ["bigpocket", "dangeregg", "edgecrimp2", "edgecrimp4", "pinch", "handjam", "fingercrimp"][Math.floor(Math.random()*7)] + ".png)"
         }
-        holds.push([holdx, holdy, ice])
+        holds.push([holdx, holdy, ice, newHold.style.backgroundImage.slice(15).split(".")[0]])
 
-        document.querySelector(".debugG").innerHTML = renderStrings(genDebug, "default", "right")
+        if (settings.debugice){
+            genDebug.push("ice: " + ice)
+            genDebug.push("spawnable: " + (holdy>16000))
+            genDebug.push("chance: " + Math.round(((holdy)/(16000/settings.punishment))*10000)/100 + "%")
+        }
+
+        if (settings.debuggen){
+            genDebug.push("biome: " + holdbiome)
+            genDebug.push("x: " + holdx)
+            genDebug.push("y: " + holdy)
+            genDebug.push("type: " + holds[holds.length-1][3])
+        }
+
+        if (settings.debuggen || settings.debugice){
+            document.querySelector(".debugG").innerHTML = renderStrings(genDebug, "default", "right")
+        }
+
         document.querySelector(".holdzone").appendChild(newHold)
+    }
+}
+
+function skinSelection(reset=false){
+    key.z = false
+    held.z = false
+
+    if (reset){
+        settings.skin = ["L", 0]
+        buildSettings()
+    } else {
+        settings.skin = ["U", prompt("Please enter skin URL", "")]
+        if (settings.skin[1] == null){settings.skin = ["L", 0]}
+        buildSettings()
+    }
+}
+
+function spawnParticle(type, pos){
+    let newParticle = document.createElement("div")
+    newParticle.className = ("particle" + Date.now() + "r" + Math.random()).replaceAll(".", "")
+
+    newParticle.style.backgroundImage = "url(img/particle/" + type + ".png)"
+    newParticle.style.width = "4px"
+    newParticle.style.height = "4px"
+    newParticle.style.position = "absolute"
+    newParticle.style.left = "4px"
+    newParticle.style.top = "4px"
+    newParticle.style.transform = "rotate(" + Math.round(Math.random())*90 + "deg)"
+
+    pos[0] += 8
+    pos[1] -= 8
+
+    document.querySelector(".holddeco").appendChild(newParticle)
+    particles.push({"pos": pos, "vel": [(Math.random()-0.5)*100, (Math.random()-0.5)*50], "className": newParticle.className})
+}
+
+async function importSkinpack(url){
+    if (skins){}
+    let newSkins = await (await fetch(url + "/pack.json")).json()
+    for (let x = 0; x < newSkins.length; x++){
+        skins.push([url + "/skins/" + newSkins[x][0] + ".png", newSkins[x][1], newSkins[x][2]])
+    }
+}
+
+function spawnBests(){
+    document.querySelector(".scoreMarkers").innerHTML = ""
+    
+    if (scores["p" + Math.floor(settings.punishment) + "Cache"] != undefined){
+        for (let x = 0; x < scores["p" + Math.floor(settings.punishment) + "Cache"].length; x++){
+            let newElement = document.createElement("div")
+
+            newElement.style.width = "512px"
+            newElement.style.position = "absolute"
+            newElement.style.top = 528-((scores[["p" + Math.floor(settings.punishment) + "Cache"]][x].value/100)*16) + "px"
+    
+            newElement.innerHTML = `<div style="width: max-content; margin: auto; margin-left: 0px; height: 16px; display: flex; text-align: center;"><div style="width: 16px; height: 16px; background-image: url(` + scores[["p" + Math.floor(settings.punishment) + "Cache"]][x].user.icons.large + `); background-size: cover; margin-left: 128px; margin-right: 8px"></div>` + renderString(scores["p" + Math.floor(settings.punishment) + "Cache"][x].user.name + " - " + (scores[["p" + Math.floor(settings.punishment) + "Cache"]][x].value/100) + "m").slice(95)
+            newElement.innerHTML += `<div class="animtape" style="width: 512px; height: 2px; background-image: url(img/scoreMarker.png);"></div>`
+            document.querySelector(".scoreMarkers").appendChild(newElement)
+        }
+    }
+
+    for (let x = 0; x < scores["p" + Math.floor(settings.punishment)].length; x++){
+        let newElement = document.createElement("div")
+
+        newElement.style.width = "512px"
+        newElement.style.position = "absolute"
+        newElement.style.top = 528-((scores[["p" + Math.floor(settings.punishment)]][x][1])*16) + "px"
+
+        newElement.innerHTML = `<div style="width: max-content; margin: auto; margin-left: 0px; height: 16px; display: flex; text-align: center;"><div style="width: 16px; height: 16px; background-image: url(img/local.png); margin-left: 128px; margin-right: 8px;"></div>` + renderString(scores["p" + Math.floor(settings.punishment)][x][0] + " - " + scores["p" + Math.floor(settings.punishment)][x][1] + "m").slice(95)
+        newElement.innerHTML += `<div class="animtape" style="width: 512px; height: 2px; background-image: url(img/scoreMarker.png);"></div>`
+        document.querySelector(".scoreMarkers").appendChild(newElement)
+    }
+}
+
+async function mountPacks() {
+    for (let x = 0; x < Object.keys(skinPacks).length; x++){
+        await importSkinpack(skinPacks[x])
+    }
+
+    if (settings.skin[1] > skins.length-1){
+        skinSelection(true)
     }
 }
 
@@ -460,6 +770,8 @@ generateHolds()
 buildTitle()
 buildSettings()
 buildDeath()
+spawnBests()
+mountPacks()
 
 setInterval(function(){
     let d = (Date.now()-tick)/1000
@@ -500,6 +812,28 @@ setInterval(function(){
     gametime()
     if (player.dead){scroll()}
 
+    if (particles.length != 0){
+        while (particles[0].pos[1] < player.best - 256){
+            document.querySelector("." + particles[0].className).remove()
+            particles.splice(0, 1)
+
+            if (particles.length == 0){
+                break
+            }
+        }
+    }
+
+    for (let x = 0; x < particles.length; x++){
+        particles[x].pos[0] += particles[x].vel[0]*d
+        particles[x].pos[1] += particles[x].vel[1]*d
+
+        particles[x].vel[0] *= 0.99
+        particles[x].vel[1] -= 500*d
+
+        document.querySelector("." + particles[x].className).style.left = Math.round(particles[x].pos[0]) + "px"
+        document.querySelector("." + particles[x].className).style.top = Math.round(512 - particles[x].pos[1]) + "px"
+    }
+
     if (document.querySelector(".loadZoneDeluxe").style.display != "none"){return}
     if (document.querySelector(".credits").style.display != "none"){return}
 
@@ -516,22 +850,40 @@ setInterval(function(){
 
         if (key.z && !held.z){
             held.z = true
-            sfx("click", 25)
+            playSound("audio/click.mp3", 25)
 
-            if (settings.menu.selection == 0){
+            if (settings.menu.selection[1] == 0){
                 document.querySelector(".settings").style.display = "none"
                 document.querySelector(".title").style.display = "block"
 
+                if (settings["reset scores"] || settings["hard reset"]){
+                    localStorage.clear("PEAKS87")
+                }
+
+                if (settings["reset skins"] || settings["hard reset"]){
+                    localStorage.clear("PEAKS87SKINPACKS")
+                }
+
+                if (settings["reset settings"] || settings["hard reset"]){
+                    localStorage.clear("PEAKS87SETTINGS")
+                }
+
+                if (settings["reset scores"] || settings["reset skins"] || settings["reset settings"] || settings["hard reset"]){
+                    location.reload()
+                    return
+                }
+
                 localStorage.setItem("PEAKS87SETTINGS", JSON.stringify(settings))
+
                 return
             }
 
-            if (settings.menu.options[settings.menu.selection].var == "zoom" && window.location != window.parent.location){
+            if (settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].var == "zoom" && window.location != window.parent.location){
                 window.open(window.location.href, '_blank').focus()
                 location.reload()
             }
 
-            if (settings.menu.options[settings.menu.selection].var == "ng"){
+            if (settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].var == "ng"){
                 if (offline){
                     NGIO.openLoginPage()
                     buildSettings()
@@ -540,40 +892,96 @@ setInterval(function(){
                 return
             }
 
+            if (settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].var == "change skin"){
+                skinSelection()
+                return
+            }
+
+            if (settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].var == "reset skin"){
+                skinSelection(true)
+                return
+            }
+
+            if (settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].var == "load spack"){
+                let newPack = prompt("Please enter skin pack URL", "")
+                if (newPack != null && !skinPacks.includes(newPack)){
+                    skinPacks.push(newPack)
+                    importSkinpack(newPack)
+                    localStorage.setItem("PEAKS87SKINPACKS", JSON.stringify(skinPacks))
+                }
+                return
+            }
+
+            if (settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].var == "discord link"){
+                window.open("https://discord.gg/8gzjP5bZ9R", '_blank').focus()
+                return
+            }
+
             settings.menu.lockin = !settings.menu.lockin
             buildSettings()
         }
 
-        if ((key.ArrowLeft && !held.ArrowLeft || key.ArrowRight && !held.ArrowRight) && settings.menu.lockin){
+        if (key.ArrowLeft && !held.ArrowLeft || key.ArrowRight && !held.ArrowRight){
             held.ArrowLeft = key.ArrowLeft
             held.ArrowRight = key.ArrowRight
 
-            if (settings.menu.options[settings.menu.selection].handler != undefined){
-                switch (settings.menu.options[settings.menu.selection].handler){
+            if (!settings.menu.lockin){
+                if (key.ArrowLeft && settings.menu.selection[0] > 0){
+                    playSound("audio/click.mp3", 25)
+                    settings.menu.selection[0]--
+                    settings.menu.selection[1] = 0
+                }
+                if (key.ArrowRight && settings.menu.selection[0] < settings.menu.options.length-1){
+                    playSound("audio/click.mp3", 25)
+                    settings.menu.selection[0]++
+                    settings.menu.selection[1] = 0
+                }
+                buildSettings()
+                return
+            }
+
+            if (settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].handler != undefined){
+                switch (settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].handler){
                     case "bool":
-                        sfx("click", 25)
-                        settings[settings.menu.options[settings.menu.selection].var] = !settings[settings.menu.options[settings.menu.selection].var]
+                        playSound("audio/click.mp3", 25)
+                        settings[settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].var] = !settings[settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].var]
                         break
                 }
             } else {
-                switch (settings.menu.options[settings.menu.selection].var){
+                switch (settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]].var){
                     case "zoom":
                         if (held.ArrowLeft && settings.zoom > 1 && window.location == window.parent.location){
-                            sfx("click", 25)
+                            playSound("audio/click.mp3", 25)
                             settings.zoom--
                         } else if (held.ArrowRight && window.location == window.parent.location){
-                            sfx("click", 25)
+                            playSound("audio/click.mp3", 25)
                             settings.zoom++
                         }
                         break
                     
                     case "punishment":
                         if (held.ArrowLeft && settings.punishment != 0.1){
-                            sfx("click", 25)
+                            playSound("audio/click.mp3", 25)
                             settings.punishment /= 10
                         } else if (held.ArrowRight && settings.punishment != 100){
-                            sfx("click", 25)
+                            playSound("audio/click.mp3", 25)
                             settings.punishment *= 10
+                        }
+                        break
+
+                    case "cycle skin":
+                        if (settings.skin[0] != "L"){
+                            playSound("audio/click.mp3", 25)
+                            settings.skin = ["L", 0]
+                            break
+                        }
+
+                        if (held.ArrowLeft && settings.skin[1] > 0){
+                            playSound("audio/click.mp3", 25)
+                            settings.skin[1]--
+                        } else if (held.ArrowRight && settings.skin[1] < skins.length-1){
+                            playSound("audio/click.mp3", 25)
+                            settings.skin[1]++
                         }
                         break
                 }
@@ -586,12 +994,12 @@ setInterval(function(){
             held.ArrowUp = key.ArrowUp
             held.ArrowDown = key.ArrowDown
 
-            if (held.ArrowUp && settings.menu.selection > 0){
-                sfx("click", 25)
-                settings.menu.selection--
-            } else if (held.ArrowDown && settings.menu.selection < settings.menu.options.length-1){
-                sfx("click", 25)
-                settings.menu.selection++
+            if (held.ArrowUp && settings.menu.selection[1] > 0){
+                playSound("audio/click.mp3", 25)
+                settings.menu.selection[1]--
+            } else if (held.ArrowDown && settings.menu.selection[1] < settings.menu.options[settings.menu.selection[0]].length-1 && settings.menu.options[settings.menu.selection[0]][settings.menu.selection[1]+1].select == undefined){
+                playSound("audio/click.mp3", 25)
+                settings.menu.selection[1]++
             }
 
             buildSettings()
@@ -612,18 +1020,22 @@ setInterval(function(){
                         "rot": 0,
                         "gripper": 0,
                         "anchor": null,
+                        "hold": {},
+                        "stamina": 100,
                         "best": 0,
                         "dead": false,
                         "holds": 0,
                         "crampon": 1,
                         "axes": false
                     }
+
+                    spawnBests()
         
                     holds = []
                     start = Date.now()
         
-                    sfxClear()
-                    sfx("click", 25)
+                    clearMusic()
+                    playSound("audio/click.mp3", 25)
         
                     document.querySelector(".holdzone").innerHTML = ""
                     document.querySelector(".gameOver").style.display = "none"
@@ -631,7 +1043,7 @@ setInterval(function(){
                     break
                 
                 case "scores":
-                    sfx("click", 25)
+                    playSound("audio/click.mp3", 25)
 
                     document.querySelector(".title").style.display = "none"
                     document.querySelector(".boards").style.display = "block"
@@ -641,8 +1053,8 @@ setInterval(function(){
                     break
                 
                 case "settings":
-                    settings.menu.selection = 0
-                    sfx("click", 25)
+                    settings.menu.selection[1] = 0
+                    playSound("audio/click.mp3", 25)
 
                     document.querySelector(".title").style.display = "none"
                     document.querySelector(".settings").style.display = "block"
@@ -650,9 +1062,14 @@ setInterval(function(){
                     break
                 
                 case "credits":
-                    sfxClear()
+                    clearMusic()
                     document.querySelector(".title").style.display = "none"
                     playCredits("block")
+                    break
+                
+                case "skins":
+                    skinSelection(true)
+                    skinSelection()
                     break
             }
             return
@@ -663,10 +1080,10 @@ setInterval(function(){
             held.ArrowDown = key.ArrowDown
 
             if (held.ArrowUp && title.selection > 0){
-                sfx("click", 25)
+                playSound("audio/click.mp3", 25)
                 title.selection--
             } else if (held.ArrowDown && title.selection < title.options.length-1){
-                sfx("click", 25)
+                playSound("audio/click.mp3", 25)
                 title.selection++
             }
 
@@ -689,18 +1106,22 @@ setInterval(function(){
                         "rot": 0,
                         "gripper": 0,
                         "anchor": null,
+                        "hold": {},
+                        "stamina": 100,
                         "best": 0,
                         "dead": false,
                         "holds": 0,
                         "crampon": 1,
                         "axes": false
                     }
+
+                    spawnBests()
         
                     holds = []
                     start = Date.now()
         
-                    sfxClear()
-                    sfx("click", 25)
+                    clearMusic()
+                    playSound("audio/click.mp3", 25)
         
                     document.querySelector(".holdzone").innerHTML = ""
                     document.querySelector(".gameOver").style.display = "none"
@@ -708,7 +1129,7 @@ setInterval(function(){
                     break
                 
                 case "back to title":
-                    sfx("click", 25)
+                    playSound("audio/click.mp3", 25)
 
                     document.querySelector(".title").style.display = "block"
                     document.querySelector(".boards").style.display = "none"
@@ -716,7 +1137,7 @@ setInterval(function(){
                     break
                 
                 case "toggle scores":
-                    sfx("click", 25)
+                    playSound("audio/click.mp3", 25)
 
                     if (leaderboard == "x"){
                         leaderboard = "z"
@@ -735,10 +1156,10 @@ setInterval(function(){
             held.ArrowDown = key.ArrowDown
 
             if (held.ArrowUp && deathMenu.selection > 0){
-                sfx("click", 25)
+                playSound("audio/click.mp3", 25)
                 deathMenu.selection--
             } else if (held.ArrowDown && deathMenu.selection < deathMenu.options.length-1){
-                sfx("click", 25)
+                playSound("audio/click.mp3", 25)
                 deathMenu.selection++
             }
 
@@ -751,6 +1172,14 @@ setInterval(function(){
         if (player.anchor == null){
             player.pos[0] += (player.vel[0]*60)*d
             player.pos[1] += (player.vel[1]*60)*d
+
+            if (player.stamina < 100) {
+                player.stamina += 10*d
+
+                if (player.stamina > 100){
+                    player.stamina = 100
+                }
+            }
 
             if (player.pos[1] < 64){
                 document.querySelector(".touchButtU").style.display = "block"
@@ -767,7 +1196,7 @@ setInterval(function(){
                 
                 if (key.ArrowUp){
                     held.ArrowUp = true
-                    sfx("jump" + Math.ceil(Math.random()*4))
+                    playSound("audio/jump" + Math.ceil(Math.random()*4) + ".mp3")
                     player.vel[1] = 5
                 }
 
@@ -789,16 +1218,16 @@ setInterval(function(){
                     held.z = true
                     lastcramp = Date.now()
                     
-                    if (player.vel[1] < 0 && player.crampon < 4){
-                        player.vel[1] = 5/player.crampon
+                    if (player.crampon < 4 && player.vel[1] < 0){
+                        player.vel[1] = 5
                     } else {
                         player.vel[1] += 5/player.crampon
                     }
 
                     if (player.crampon < 4){
-                        sfx("jump" + Math.ceil(Math.random()*4))
+                        playSound("audio/jump" + Math.ceil(Math.random()*4) + ".mp3")
                     } else {
-                        sfx("cramponfail" + Math.ceil(Math.random()*3))
+                        playSound("audio/cramponfail" + Math.ceil(Math.random()*3) + ".mp3")
                     }
 
                     player.crampon++
@@ -817,16 +1246,19 @@ setInterval(function(){
                 for (let x = 0; x < holds.length; x++){
                     if (Math.round(holds[x][0]/16) == Math.round((player.pos[0]-16)/16) && Math.round(holds[x][1]/16) == Math.round(player.pos[1]/16) && holds[x][2] == player.axes){
                         player.gripper = 0
+                        player.hold = holds[x]
                         player.anchor = Object.assign([], player.pos)
                         player.anchor[0] -= 16
                         player.rot = 1
                         player.vel = player.vel[1]*2
 
                         if (!player.axes){
-                            sfx("grab" + Math.ceil(Math.random()*3))
+                            playSound("audio/grab" + Math.ceil(Math.random()*3) + ".mp3")
+                            for (let x = 0; x < 10; x++){spawnParticle("stone", Object.assign([], player.anchor))}
                         } else {
-                            sfx("axehit" + Math.ceil(Math.random()*3))
-                            sfx("axecrunch" + Math.ceil(Math.random()*3))
+                            playSound("audio/axehit" + Math.ceil(Math.random()*3) + ".mp3")
+                            playSound("audio/axecrunch" + Math.ceil(Math.random()*3) + ".mp3")
+                            for (let x = 0; x < 10; x++){spawnParticle("ice", Object.assign([], player.anchor))}
                         }
 
                         player.holds++
@@ -839,16 +1271,19 @@ setInterval(function(){
                 for (let x = 0; x < holds.length; x++){
                     if (Math.round(holds[x][0]/16) == Math.round((player.pos[0]+16)/16) && Math.round(holds[x][1]/16) == Math.round(player.pos[1]/16) && holds[x][2] == player.axes){
                         player.gripper = 1
+                        player.hold = holds[x]
                         player.anchor = Object.assign([], player.pos)
                         player.anchor[0] += 16
                         player.rot = -180
                         player.vel = -player.vel[1]*2
                         
                         if (!player.axes){
-                            sfx("grab" + Math.ceil(Math.random()*3))
+                            playSound("audio/grab" + Math.ceil(Math.random()*3) + ".mp3")
+                            for (let x = 0; x < 10; x++){spawnParticle("stone", Object.assign([], player.anchor))}
                         } else {
-                            sfx("axehit" + Math.ceil(Math.random()*3))
-                            sfx("axecrunch" + Math.ceil(Math.random()*3))
+                            playSound("audio/axehit" + Math.ceil(Math.random()*3) + ".mp3")
+                            playSound("audio/axecrunch" + Math.ceil(Math.random()*3) + ".mp3")
+                            for (let x = 0; x < 10; x++){spawnParticle("ice", Object.assign([], player.anchor))}
                         }
 
                         player.holds++
@@ -856,12 +1291,37 @@ setInterval(function(){
                     }
                 }
             }
-        }
-
-        if (player.anchor != null){
+        } else {
             player.crampon = 1
             player.pos[0] = player.anchor[0] + (24 * Math.cos(player.rot/60))
             player.pos[1] = player.anchor[1] + (24 * Math.sin(player.rot/60))
+
+            if (["dangeregg", "bigpocket", "edgecrimp2", "edgecrimp4"].includes(player.hold[3])){
+                player.anchor[1] -= 5*d*Math.pow(settings.punishment*10, 0.05)
+                if (Math.random() > 0.75){spawnParticle("stone", Object.assign([], player.anchor))}
+
+                if (player.hold[1] - player.anchor[1] > 12){
+                    key.z = false
+                    key.x = false
+                }
+            }
+
+            if (["bigpocket", "handjam", "pinch", "fingercrimp"].includes(player.hold[3]) || player.hold[3].slice(0, 3) == "ice"){
+                player.stamina -= 15*d*Math.pow(settings.punishment*10, 0.16)
+            } else if (["edgecrimp", "edgecrimp2", "edgecrimp3", "edgecrimp4"].includes(player.hold[3]) || player.hold[3].slice(0, 3) == "ice"){
+                player.stamina -= 5*d*Math.pow(settings.punishment*10, 0.16)
+            } else if (player.stamina < 100) {
+                player.stamina += 30*d
+            }
+
+            if (player.stamina <= 0){
+                key.z = false
+                key.x = false
+            }
+
+            if (player.stamina > 100){
+                player.stamina = 100
+            }
 
             if (key.ArrowLeft){
                 held.ArrowLeft = true
@@ -936,12 +1396,12 @@ setInterval(function(){
 
             if (!offline){NGIO.postScore(deathboard, Math.round(player.best/16)*100, function(){})}
 
-            sfx("fall" + Math.ceil(Math.random()*4), 50)
-            deathtimeout.push(setTimeout(function(){sfx("fall" + Math.ceil(Math.random()*4), 25)}, 1000))
-            deathtimeout.push(setTimeout(function(){sfx("fall" + Math.ceil(Math.random()*4), 12.5)}, 2000))
-            deathtimeout.push(setTimeout(function(){sfx("fall" + Math.ceil(Math.random()*4), 6.25)}, 3000))
-            deathtimeout.push(setTimeout(function(){sfx("fall" + Math.ceil(Math.random()*4), 3.125)}, 4000))
-            deathtimeout.push(setTimeout(function(){sfx("fall" + Math.ceil(Math.random()*4), 1.5625)}, 5000))
+            playSound("audio/fall" + Math.ceil(Math.random()*4) + ".mp3", 50)
+            deathtimeout.push(setTimeout(function(){playSound("audio/fall" + Math.ceil(Math.random()*4) + ".mp3", 25)}, 1000))
+            deathtimeout.push(setTimeout(function(){playSound("audio/fall" + Math.ceil(Math.random()*4) + ".mp3", 12.5)}, 2000))
+            deathtimeout.push(setTimeout(function(){playSound("audio/fall" + Math.ceil(Math.random()*4) + ".mp3", 6.25)}, 3000))
+            deathtimeout.push(setTimeout(function(){playSound("audio/fall" + Math.ceil(Math.random()*4) + ".mp3", 3.125)}, 4000))
+            deathtimeout.push(setTimeout(function(){playSound("audio/fall" + Math.ceil(Math.random()*4) + ".mp3", 1.5625)}, 5000))
 
             best = false
             let prepos = 0
@@ -949,22 +1409,22 @@ setInterval(function(){
             Math.round(player.best/16)
 
             for (let x = 0; x < 10; x++){
-                if (scores[x][0] == "YOU"){break}
+                if (scores["p" + Math.floor(settings.punishment)][x][0] == "YOU"){break}
                 prepos++
             }
 
             try {
-                if (scores[prepos][0] == "YOU" && scores[prepos][1] < Math.round(player.best/16)){best = true}
+                if (scores["p" + Math.floor(settings.punishment)][prepos][0] == "YOU" && scores["p" + Math.floor(settings.punishment)][prepos][1] < Math.round(player.best/16)){best = true}
             } catch {}
 
             for (let x = 0; x < 10; x++){
-                if (scores[9-x][1] > Math.round(player.best/16)){
-                    scores.splice(10-x, 0, ["YOU", Math.round(player.best/16)])
-                    scores.splice(10, 999)
+                if (scores["p" + Math.floor(settings.punishment)][9-x][1] > Math.round(player.best/16)){
+                    scores["p" + Math.floor(settings.punishment)].splice(10-x, 0, ["YOU", Math.round(player.best/16)])
+                    scores["p" + Math.floor(settings.punishment)].splice(10, 999)
                     break
-                } else if (scores[9-x][1] < Math.round(player.best/16) && x == 9){
-                    scores.splice(0, 0, ["YOU", Math.round(player.best/16)])
-                    scores.splice(10, 999)
+                } else if (scores["p" + Math.floor(settings.punishment)][9-x][1] < Math.round(player.best/16) && x == 9){
+                    scores["p" + Math.floor(settings.punishment)].splice(0, 0, ["YOU", Math.round(player.best/16)])
+                    scores["p" + Math.floor(settings.punishment)].splice(10, 999)
                 }
             }
 
@@ -973,21 +1433,21 @@ setInterval(function(){
             let postpos = 0
 
             for (let x = 0; x < 10; x++){
-                if (scores[x][0] == "YOU"){break}
+                if (scores["p" + Math.floor(settings.punishment)][x][0] == "YOU"){break}
                 postpos++
             }
 
-            if (best || postpos < prepos || (prepos == 0 && scores[0][1] == Math.round(player.best/16))){
+            if (best || postpos < prepos || (prepos == 0 && scores["p" + Math.floor(settings.punishment)][0][1] == Math.round(player.best/16))){
                 best = true
-                if (postpos == 0 && prepos != 0 && scores[1][0] == "SLM"){
+                if (postpos == 0 && prepos != 0 && scores["p" + Math.floor(settings.punishment)][1][0] == "SLM"){
                     playCredits("none", true)
                 } else {
-                    sfx("ForestA", 15)
+                    playMusic("audio/lanette.mp3", 15)
                 }
             } else {
-                sfx("ExecutiveOffice", 15)
+                playMusic("audio/marionette.mp3", 15)
                 if (Math.round(player.best/16) == 87){
-                    sfx("87")
+                    playSound("audio/87.mp3")
                 }
             }
 
@@ -1005,7 +1465,7 @@ setInterval(function(){
 
             let yours = 0
             for (let x = 0; x < 10; x++){
-                if (scores[x][0] == "YOU"){
+                if (scores["p" + Math.floor(settings.punishment)][x][0] == "YOU"){
                     yours++
                     unlockMedal(82414)
                     if (x < 3){
@@ -1014,10 +1474,10 @@ setInterval(function(){
                 }
             }
 
-            unlockMedal(82412, scores[0][0] == "YOU")
+            unlockMedal(82412, scores["p" + Math.floor(settings.punishment)][0][0] == "YOU")
             unlockMedal(82411, yours == 10)
 
-            if (!(postpos == 0 && prepos != 0 && scores[1][0] == "SLM")){
+            if (!(postpos == 0 && prepos != 0 && scores["p" + Math.floor(settings.punishment)][1][0] == "SLM")){
                 document.querySelector(".boards").style.display = "block"
                 renderLB()
             }
@@ -1035,6 +1495,11 @@ setInterval(function(){
             wind.volume = player.best/16000
         }
 
+        if (player.best/1600 > 1){
+            forest.volume = 0
+        } else {
+            forest.volume = 1-(player.best/1600)
+        }
         // GRAPHICS
         document.querySelector(".player").style.left = (Math.round(player.pos[0]) + "px")
         document.querySelector(".player").style.top = (Math.round(512- player.pos[1]) + "px")
@@ -1047,47 +1512,103 @@ setInterval(function(){
             document.querySelector(".handR").style.top = (Math.round(-player.vel[1]) + "px")
         } else {
             if (player.gripper == 0){
-                document.querySelector(".handL").style.left = -Math.round(player.pos[0] - player.anchor[0]) + "px"
-                document.querySelector(".handL").style.top = Math.round(player.pos[1] - player.anchor[1]) + "px"
+                document.querySelector(".handL").style.left = -Math.round((player.pos[0] - player.anchor[0]) + ([-8*Math.random(), 8*Math.random()][Math.round(Math.random())]*(1-(player.stamina/100)))) + "px"
+                document.querySelector(".handL").style.top = Math.round((player.pos[1] - player.anchor[1]) + ([-8*Math.random(), 8*Math.random()][Math.round(Math.random())]*(1-(player.stamina/100)))) + "px"
             } else {
                 document.querySelector(".handL").style.left = "-16px"
                 document.querySelector(".handL").style.top = "0px"
             }
 
             if (player.gripper == 1){
-                document.querySelector(".handR").style.left = -Math.round(player.pos[0] - player.anchor[0]) + "px"
-                document.querySelector(".handR").style.top = Math.round(player.pos[1] - player.anchor[1]) + "px"
+                document.querySelector(".handR").style.left = -Math.round((player.pos[0] - player.anchor[0]) + ([-8*Math.random(), 8*Math.random()][Math.round(Math.random())]*(1-(player.stamina/100)))) + "px"
+                document.querySelector(".handR").style.top = Math.round((player.pos[1] - player.anchor[1]) + ([-8*Math.random(), 8*Math.random()][Math.round(Math.random())]*(1-(player.stamina/100)))) + "px"
             } else {
                 document.querySelector(".handR").style.left = "16px"
                 document.querySelector(".handR").style.top = "0px"
             }
         }
 
-        if (player.axes){
-            document.querySelector(".peakMan").style.backgroundImage = "url(img/peakManAxeless.png)"
+        document.querySelectorAll(".stamina")[1].style.width = Math.round(16*(player.stamina/100)) + "px"
+
+        if (player.stamina < 100){
+            document.querySelectorAll(".stamina")[0].style.opacity = "100%"
         } else {
-            document.querySelector(".peakMan").style.backgroundImage = "url(img/peakMan.png )"
+            document.querySelectorAll(".stamina")[0].style.opacity = "0%"
+        }
+
+        let skin = ""
+
+        if (settings.skin[0] == "U"){
+            skin = "url(" + settings.skin[1] + ")"
+        } else if (skins[settings.skin[1]][0].startsWith("https://")){
+            skin = "url(" + skins[settings.skin[1]][0] + ")"
+        } else if (settings.skin[0] == "L"){
+            skin = "url(img/skins/" + skins[settings.skin[1]][0] + ".png)"
+        }
+
+        document.querySelector(".peakMan").style.backgroundImage = skin
+        document.querySelector(".handL").style.backgroundImage = skin
+        document.querySelector(".handR").style.backgroundImage = skin
+
+        if (settings.skin[0] == "L" && skins[settings.skin[1]][2] != undefined && key.ArrowLeft){
+            document.querySelector(".peakMan").style.transform = "scaleX(1)"
+        } else if (settings.skin[0] == "L" && skins[settings.skin[1]][2] != undefined && key.ArrowRight){
+            document.querySelector(".peakMan").style.transform = "scaleX(-1)"
+        } else if (skins[settings.skin[1]][2] == undefined){
+            document.querySelector(".peakMan").style.transform = "scaleX(1)"
         }
 
         if (player.axes){
-            document.querySelector(".handL").style.backgroundImage = "url(img/handaxeL.png)"
+            document.querySelector(".peakMan").style.backgroundPosition = "48px 32px"
+        } else {
+            document.querySelector(".peakMan").style.backgroundPosition = "48px 64px"
+        }
+
+        if (player.axes && key.z){
+            document.querySelector(".handL").style.backgroundPosition = "32px 16px"
+        } else if (player.axes){
+            document.querySelector(".handL").style.backgroundPosition = "32px 32px"
         } else if (key.z){
-            document.querySelector(".handL").style.backgroundImage = "url(img/handclampL.png)"
+            document.querySelector(".handL").style.backgroundPosition = "32px 48px"
         } else {
-            document.querySelector(".handL").style.backgroundImage = "url(img/handL.png)"
+            document.querySelector(".handL").style.backgroundPosition = "32px 64px"
         }
 
-        if (player.axes){
-            document.querySelector(".handR").style.backgroundImage = "url(img/handaxeR.png)"
+        if (player.axes && key.x){
+            document.querySelector(".handR").style.backgroundPosition = "16px 16px"
+        } else if (player.axes){
+            document.querySelector(".handR").style.backgroundPosition = "16px 32px"
         } else if (key.x){
-            document.querySelector(".handR").style.backgroundImage = "url(img/handclampR.png)"
+            document.querySelector(".handR").style.backgroundPosition = "16px 48px"
         } else {
-            document.querySelector(".handR").style.backgroundImage = "url(img/handR.png)"
+            document.querySelector(".handR").style.backgroundPosition = "16px 64px"
         }
 
-        document.querySelector(".time").innerHTML = renderTime(Date.now() - start)
-        document.querySelector(".height").innerHTML = renderString(Math.round(player.best/16) + "m")
-        document.querySelector(".holds").innerHTML = renderString(player.holds + " holds")
+        let stats = []
+
+        if (!player.dead){
+            stats.push(renderTime(Date.now() - start))
+            stats.push(Math.round(player.best/16) + "m")
+            stats.push(player.holds + " holds")
+
+            if (scores["p" + Math.floor(settings.punishment) + "Cache"] != undefined){
+                for (let x = 0; x < scores["p" + Math.floor(settings.punishment) + "Cache"].length; x++){
+                    if (player.best/16 >= scores["p" + Math.floor(settings.punishment) + "Cache"][x].value/100){
+                        stats.push("@ #" + (x+1))
+                        break
+                    }
+                }
+            }
+        
+            for (let x = 0; x < scores["p" + Math.floor(settings.punishment)].length; x++){
+                if (player.best/16 >= scores["p" + Math.floor(settings.punishment)][x][1]){
+                    stats.push("* #" + (x+1))
+                    break
+                }
+            }
+
+            document.querySelector(".stats").innerHTML = renderStrings(stats, "default", "left")
+        }
 
         scroll()
     }

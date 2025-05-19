@@ -4,3 +4,16 @@
     user-select: none;
     touch-action: manipulation;
 }
+
+@keyframes scoreTape {
+    from {background-position: 0px 0px};
+    to {background-position: 16px 0px;}
+}
+
+.animtape {
+    animation: scoreTape 1s linear infinite;
+}
+
+.background {
+    image-rendering: auto;
+}

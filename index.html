@@ -7,25 +7,30 @@
     <script src="https://cdn.jsdelivr.net/gh/PsychoGoldfishNG/NewgroundsIO-JS@8c72515/dist/NewgroundsIO.min.js"></script>
     <script src="lib/text.js"></script>
     <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="img/handL.png" type="image/x-icon">
+    <link rel="shortcut icon" href="img/holds/hold.png" type="image/x-icon">
 </head>
 <body style="background-color: black;">
     <div class="background" style="background-image: url(img/background/1p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat;"></div>
     <div class="background bg360p" style="display: none; background-image: url(img/background/360p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
     <div class="background bg480p" style="display: none; background-image: url(img/background/480p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
     <div class="background bg720p" style="display: none; background-image: url(img/background/720p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
-    <div class="background bg1080p" style="display: none; background-image: url(img/background/1080p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
-    <div class="background bg4k" style="display: none; background-image: url(img/background/4k.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
+    <div class="background bg1080p" style="display: none; background-image: url(https://waspventman.co.uk/games/peaks87/background/1080p.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
+    <div class="background bg4k" style="display: none; background-image: url(https://waspventman.co.uk/games/peaks87/background/4k.png); background-size: cover; width: 100vw; height: 100vh; position: absolute; top: calc(50% - 50vh); left: calc(50% - 50vw); background-position: center; background-repeat: no-repeat; background-color: transparent;"></div>
     <div class="gameWindow" style="filter: grayscale(100%); width: 512px; height: 512px; position: absolute; top: calc(50% - 256px); left: calc(50% - 256px); overflow: hidden; background-color: rgb(135, 206, 235);">
         <div class="stars" style="width: 512px; height: 512px; position: absolute; background-image: url(img/stars.png); opacity: 0%;"></div>
         <div class="game" style="width: 512px; height: 512px; position: absolute; z-index: 1000; overflow: visible;">
-            <div class="holdzone" style=" overflow: visible;"></div>
-            <div class="holddeco" style=" overflow: visible;"></div>
+            <div class="holdzone" style="overflow: visible;"></div>
+            <div class="holddeco" style="overflow: visible;"></div>
+            <div class="scoreMarkers" style="overflow: visible;"></div>
             <div style="position: absolute; top: 480px; background-image: url(img/ground.png); width: 512px; height: 64px;"></div>
             <div class="player" style="position: absolute; left: -16px; overflow: visible;">
-                <div class="handL" style="width: 16px; height: 16px; background-image: url(img/handL.png); position: absolute;"></div>
-                <div class="peakMan" style="width: 16px; height: 32px; background-image: url(img/peakMan.png); position: absolute;"></div>
-                <div class="handR" style="width: 16px; height: 16px; background-image: url(img/handR.png); position: absolute;"></div>
+                <div class="handL" style="width: 16px; height: 16px; background-image: url(img/peakManSheet.png); position: absolute;"></div>
+                <div class="peakMan" style="width: 16px; height: 32px; background-image: url(img/peakManSheet.png); position: absolute; overflow: visible;">
+                    <div class="stamina" style="width: 18px; height: 6px; position: absolute; top: -8px; left: -1px; background-color: black; transition: opacity 0.5s;">
+                        <div class="stamina" style="width: 16px; height: 4px; position: absolute; left: 1px; top: 1px; background-color: white;"></div>
+                    </div>
+                </div>
+                <div class="handR" style="width: 16px; height: 16px; background-image: url(img/peakManSheet.png); position: absolute;"></div>
             </div>
         </div>
         <div class="towerRender" style="width: 512px; height: 2048px; position: absolute; background-image: url(img/cliff.png); z-index: 100;"></div>
@@ -43,34 +48,21 @@
         <div class="paralax11" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraHill.png); z-index: 88;"></div>
         <div class="paralax12" style="width: 512px; height: 192px; position: absolute; bottom: -32px; background-image: url(img/deco/paraHill.png); z-index: 87; transform: scaleX(-1);"></div>
         <div class="paralax13" style="width: 512px; height: 224px; position: absolute; bottom: -32px; background-image: url(img/deco/paraMount.png); z-index: 86;"></div>
-        <div class="time" style="position: absolute; z-index: 10000; top: 16px; left: 128px; display: flex;"></div>
-        <div class="height" style="position: absolute; z-index: 10000; top: 32px; left: 128px; display: flex;"></div>
-        <div class="gamepad" style="position: absolute; z-index: 10000; top: 32px; right: 128px; display: none;">
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/g.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/a.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/m.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/e.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/p.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/a.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/d.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/_.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/c.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/n.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/n.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/e.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/c.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/t.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/e.png);"></div>
-            <div style="width: 8px; height: 16px; background-image: url(img/letter/d.png);"></div>
-        </div>
-        <div class="holds" style="position: absolute; z-index: 10000; top: 48px; left: 128px; display: flex;"></div>
-        <div class="con" style="position: absolute; z-index: 10000; bottom: 16px; left: 128px; display: none;"></div>
-        <div class="ver" style="position: absolute; z-index: 10000; top: 16px; right: 128px; display: flex;"></div>
-        <div style="position: absolute; z-index: 10000; top: 32px; right: 128px; text-align: right; width: max-content;">
+        
+        <div class="paralax"></div>
+        <div class="fog" style="position: absolute; width: 512px; height: 512px; background-image: url(img/deco/cloud.png); z-index: 5000; display: none;"></div>
+
+        <div class="stats" style="position: absolute; z-index: 10000; top: 16px; left: 128px; text-align: right; width: max-content;"></div>
+        <div style="position: absolute; z-index: 10000; top: 16px; right: 128px; text-align: right; width: max-content;">
+            <div class="con" style="position: absolute; z-index: 10000; bottom: 16px; left: 128px; display: none;"></div>
+            <div style="display: flex; width: max-content; margin: auto; margin-right: 0px;">
+                <div class="gamepad" style="width: 16px; height: 16px; background-image: url(img/controller.png); margin-right: 8px; flex-shrink: 0;"></div>
+                <div class="ver" style="width: 100%;"></div>
+            </div>
             <div class="debugG" style="width: 100%;"></div>
             <div class="debugP" style="width: 100%;"></div>
         </div>
+        
         <div class="gameOver" style="position: absolute; z-index: 10000; top: 64px; left: 224px; display: none; width: 64px; height: 64px; background-image: url(img/gameover.png);"></div>
         <div class="boards" style="position: absolute; z-index: 10000; top: 64px; left: 128px; width: 256px; display: none;">
             <div class="boardText" style="width: 100%;"></div>
@@ -90,7 +82,7 @@
             <div class="touchButtU" style="width: 64px; height: 64px; position: absolute; right: 160px; bottom: 64px; background-image: url(img/touchButtU.png); border-radius: 32px;"></div>
             <div class="touchButtD" style="width: 64px; height: 64px; position: absolute; right: 96px; bottom: 64px; background-image: url(img/touchButtD.png); border-radius: 32px;"></div>
         </div>
-        <div class="focus" style="position: absolute; z-index: 10000000; width: 512px; height: 512px; background-color: #000000dd; user-select: all; display: block;" onclick="this.style.display = 'none'; wind.play()">
+        <div class="focus" style="position: absolute; z-index: 10000000; width: 512px; height: 512px; background-color: #000000dd; user-select: all; display: block;" onclick="this.style.display = 'none'; wind.play(); forest.play()">
             <div style="width: max-content; margin: auto; height: 16px; margin-top: 240px; display: flex; text-align: center">
                 <div style="width: 8px; height: 16px; background-image: url(img/letter/o.png);"></div>
                 <div style="width: 8px; height: 16px; background-image: url(img/letter/u.png);"></div>
@@ -124,11 +116,19 @@
         </div>
     </div>
 
+    <script src="lib/audio.js"></script>
+    <script src="lib/KBnM.js"></script>
+    <script src="lib/leaderboard.js"></script>
+    <script src="lib/menu.js"></script>
+    <script src="nginit.js"></script>
+    <script src="script.js"></script>
+    <script src="lib/credits.js"></script>
+    <script src="lib/player.js"></script>
     <div class="loadZoneDeluxe" style="position: absolute; width: 512px; height: 512px; top: calc(50% - 256px); left: calc(50% - 256px); z-index: 1000000; background-color: black;">
         <div class="assetCount" style="width: max-content; margin: auto; margin-top: 240px;"></div>
     </div>
     <script>
-        let toload = 60
+        let toload = 50
         let loaded = 0
         let loadLoop = setInterval(function(){
             document.querySelector(".assetCount").innerHTML = renderStrings(["Loading...", loaded + " of " + toload])
@@ -163,8 +163,6 @@
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/jump2.mp3"></audio>
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/jump3.mp3"></audio>
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/jump4.mp3"></audio>
-        <audio oncanplaythrough="loaded++" preload="auto" src="audio/ForestA.mp3"></audio>
-        <audio oncanplaythrough="loaded++" preload="auto" src="audio/ExecutiveOffice.mp3"></audio>
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/highwind.mp3"></audio>
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/87.mp3"></audio>
         <audio oncanplaythrough="loaded++" preload="auto" src="audio/click.mp3"></audio>
@@ -190,14 +188,6 @@
         <img onload="loaded++" src="img/holds/pinch.png">
         <img onload="loaded++" src="img/cliff.png">
         <img onload="loaded++" src="img/ground.png">
-        <img onload="loaded++" src="img/handclampL.png">
-        <img onload="loaded++" src="img/handclampR.png">
-        <img onload="loaded++" src="img/handaxeL.png">
-        <img onload="loaded++" src="img/handaxeR.png">
-        <img onload="loaded++" src="img/handL.png">
-        <img onload="loaded++" src="img/handR.png">
-        <img onload="loaded++" src="img/peakMan.png">
-        <img onload="loaded++" src="img/peakManAxeless.png">
         <img onload="loaded++" src="img/logo.png">
         <img onload="loaded++" src="img/stars.png">
         <img onload="loaded++" src="img/deco/paraTree.png">
@@ -206,17 +196,8 @@
         <img onload="document.querySelector('.bg360p').style.display = 'block'" src="img/background/360p.png">
         <img onload="document.querySelector('.bg480p').style.display = 'block'" src="img/background/480p.png">
         <img onload="document.querySelector('.bg720p').style.display = 'block'" src="img/background/720p.png">
-        <img onload="document.querySelector('.bg1080p').style.display = 'block'" src="img/background/1080p.png">
-        <img onload="document.querySelector('.bg4k').style.display = 'block'" src="img/background/4k.png">
+        <img onload="document.querySelector('.bg1080p').style.display = 'block'" src="https://waspventman.co.uk/games/peaks87/background/1080p.png">
+        <img onload="document.querySelector('.bg4k').style.display = 'block'" src="https://waspventman.co.uk/games/peaks87/background/4k.png">
     </div>
-
-    <script src="lib/audio.js"></script>
-    <script src="lib/KBnM.js"></script>
-    <script src="lib/leaderboard.js"></script>
-    <script src="lib/menu.js"></script>
-    <script src="nginit.js"></script>
-    <script src="script.js"></script>
-    <script src="lib/credits.js"></script>
-    <script src="lib/player.js"></script>
 </body>
 </html>
